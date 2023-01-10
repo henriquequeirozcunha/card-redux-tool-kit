@@ -7,6 +7,7 @@ type ButtonTypes =
 
 export type ButtonProps = {
   icon?: JSX.Element
+  as?: React.ElementType
 } & ButtonTypes
 
 const Button: React.ForwardRefRenderFunction<S.WrapperProps, ButtonProps> = (

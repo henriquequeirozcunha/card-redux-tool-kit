@@ -7,6 +7,7 @@ import {
   generateUUID,
   mockProducts
 } from 'store/productSlice'
+import Base from 'templates/Base'
 import * as S from './styles'
 
 const defaultProductValues: Product = {
@@ -23,13 +24,12 @@ const Main = ({
   const [product, setProduct] = useState<Product>(defaultProductValues)
 
   useEffect(() => {
+    console.log('iniciou')
     setProducts((oldState) => [...oldState, ...mockProducts])
   }, [])
 
   const handleInput = (field: string, value: string) => {
     setProduct((s) => ({ ...s, [field]: value }))
-
-    console.log('product', product)
   }
 
   const handleAddProduct = () => {
@@ -50,39 +50,41 @@ const Main = ({
   }
 
   return (
-    <S.Wrapper>
-      <S.Logo
-        src="/img/logo.svg"
-        alt="Imagem de um átomo com os textos React Avançado"
-      />
-      <S.Title>{title}</S.Title>
-      <S.Description>{description}</S.Description>
+    <Base>
+      <S.Wrapper>
+        <S.Logo
+          src="/img/logo.svg"
+          alt="Imagem de um átomo com os textos React Avançado"
+        />
+        <S.Title>{title}</S.Title>
+        <S.Description>{description}</S.Description>
 
-      <S.Container>
-        <S.Title>My Container</S.Title>
-        <S.Content>
-          <S.CardForm>
-            <label htmlFor="name">Nome do Produto</label>
-            <input
-              type="text"
-              name="name"
-              onChange={(v) => handleInput('name', v.target.value)}
-            />
-            <Button onClick={() => handleAddProduct()}>Adicionar</Button>
-          </S.CardForm>
-
-          <S.CardListWrapper>
-            {products?.map((product) => (
-              <Card
-                key={product.id}
-                product={product}
-                onRemoveItem={() => handleRemoveItem(product.id)}
+        <S.Container>
+          <S.Title>My Container</S.Title>
+          <S.Content>
+            <S.CardForm>
+              <label htmlFor="name">Nome do Produto</label>
+              <input
+                type="text"
+                name="name"
+                onChange={(v) => handleInput('name', v.target.value)}
               />
-            ))}
-          </S.CardListWrapper>
-        </S.Content>
-      </S.Container>
-    </S.Wrapper>
+              <Button onClick={() => handleAddProduct()}>Adicionar</Button>
+            </S.CardForm>
+
+            <S.CardListWrapper>
+              {products?.map((product) => (
+                <Card
+                  key={product.id}
+                  product={product}
+                  onRemoveItem={() => handleRemoveItem(product.id)}
+                />
+              ))}
+            </S.CardListWrapper>
+          </S.Content>
+        </S.Container>
+      </S.Wrapper>
+    </Base>
   )
 }
 

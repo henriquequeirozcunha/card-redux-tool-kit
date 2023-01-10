@@ -2,6 +2,7 @@ import * as S from './styles'
 import { Product } from 'Core/Domain/Entities/product'
 import Button from 'components/Button'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export type CardProps = {
   product: Product
@@ -15,12 +16,18 @@ const Card = ({ product, onRemoveItem }: CardProps) => {
     !!onRemoveItem && onRemoveItem(product.id)
   }
 
+  const getProductUrl = (product: Product) => {
+    return `/product/${product.id}`
+  }
+
   return (
     <S.Wrapper>
       {product && (
         <>
           <S.Header>
-            <h3>{product?.name}</h3>
+            <Link href={getProductUrl(product)} passHref>
+              <S.CardTitle>{product?.name}</S.CardTitle>
+            </Link>
           </S.Header>
 
           <S.Content>
