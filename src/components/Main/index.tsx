@@ -1,6 +1,6 @@
 import Button from 'components/Button'
 import Card from 'components/Card'
-import { Product } from 'Core/domain/entities/product'
+import { Product } from 'core/domain/entities/product'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'store/configureStore'
 import {

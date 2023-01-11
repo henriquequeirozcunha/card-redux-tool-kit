@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Product } from 'Core/domain/entities/product'
+import { Product } from 'core/domain/entities/product'
 import { v4 as uuidv4 } from 'uuid'
 
 export const mockProducts: Product[] = [
