@@ -1,4 +1,5 @@
-import { Product } from 'Core/Domain/Entities/product'
+import { createSlice } from '@reduxjs/toolkit'
+import { Product } from 'Core/domain/entities/product'
 import { v4 as uuidv4 } from 'uuid'
 
 export const mockProducts: Product[] = [
@@ -44,3 +45,37 @@ export const createNewEmptyProduct = (): Product => {
 export const generateUUID = () => {
   return uuidv4()
 }
+
+type ProductState = {
+  products: Product[]
+  product: Product | null
+}
+
+const initialState: ProductState = {
+  products: [],
+  product: null
+}
+
+export const productSlice = createSlice({
+  name: 'product',
+  initialState,
+  reducers: {
+    setProduct: (state, action) => {
+      state.product = action.payload
+    },
+    setProducts: (state) => {
+      state.products = mockProducts
+    },
+    addProduct: (state, action) => {
+      state.products.push(action.payload)
+    },
+    removeProduct: (state, action) => {
+      const { id } = action.payload
+
+      state.products = state.products.filter((p) => p.id !== id)
+    }
+  }
+})
+
+export const { setProduct, setProducts, addProduct, removeProduct } =
+  productSlice.actions

@@ -1,5 +1,5 @@
 import * as S from './styles'
-import { Product } from 'Core/Domain/Entities/product'
+import { Product } from 'Core/domain/entities/product'
 import Button from 'components/Button'
 import Image from 'next/image'
 import Link from 'next/link'

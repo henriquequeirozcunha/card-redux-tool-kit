@@ -25,6 +25,7 @@
     ]
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.1",
     "@styled-icons/boxicons-regular": "^10.38.0",
     "@styled-icons/boxicons-solid": "^10.38.0",
     "@styled-icons/fa-brands": "^10.38.0",

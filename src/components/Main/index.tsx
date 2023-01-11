@@ -1,52 +1,50 @@
 import Button from 'components/Button'
 import Card from 'components/Card'
-import { Product } from 'Core/Domain/Entities/product'
-import { useEffect, useState } from 'react'
+import { Product } from 'Core/domain/entities/product'
+import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from 'store/configureStore'
 import {
-  createNewEmptyProduct,
+  addProduct,
   generateUUID,
-  mockProducts
+  removeProduct,
+  setProduct,
+  setProducts
 } from 'store/productSlice'
 import Base from 'templates/Base'
 import * as S from './styles'
-
-const defaultProductValues: Product = {
-  id: '',
-  name: 'New Product',
-  price: 0
-}
 
 const Main = ({
   title = 'React Avançado',
   description = 'Typescript, ReactJS, NextJS e Styled Component'
 }) => {
-  const [products, setProducts] = useState<Product[]>([])
-  const [product, setProduct] = useState<Product>(defaultProductValues)
+  const { products, product } = useAppSelector((store) => store.products)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    console.log('iniciou')
-    setProducts((oldState) => [...oldState, ...mockProducts])
+    dispatch(setProducts())
   }, [])
 
   const handleInput = (field: string, value: string) => {
-    setProduct((s) => ({ ...s, [field]: value }))
+    dispatch(setProduct({ ...product, [field]: value }))
   }
 
   const handleAddProduct = () => {
-    if (!product.name) {
+    if (!product?.name) {
       return
     }
 
-    const productToAdd = {
+    const productToAdd: Product = {
       ...product,
+      price: 1200,
+      wishList: true,
       id: generateUUID()
     }
 
-    setProducts([...products, productToAdd])
+    dispatch(addProduct(productToAdd))
   }
 
   const handleRemoveItem = (id: string) => {
-    setProducts((p) => p.filter((p) => p.id !== id))
+    dispatch(removeProduct({ id }))
   }
 
   return (
