@@ -1,33 +1,33 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { AddProduct, ListProducts } from 'core/application/services/products'
 import { Product } from 'core/domain/entities/product'
-import { v4 as uuidv4 } from 'uuid'
+import { generateUniqueId } from 'core/application/utils'
 
 export const mockProducts: Product[] = [
   {
-    id: uuidv4(),
+    id: generateUniqueId(),
     name: 'New Product 1',
     price: 100,
     pictureUrl: '/img/logo.svg'
   },
   {
-    id: uuidv4(),
+    id: generateUniqueId(),
     name: 'New Product 2',
     price: 200
   },
   {
-    id: uuidv4(),
+    id: generateUniqueId(),
     name: 'New Product 3',
     price: 300,
     pictureUrl: '/img/logo.svg'
   },
   {
-    id: uuidv4(),
+    id: generateUniqueId(),
     name: 'New Product 4',
     price: 400
   },
   {
-    id: uuidv4(),
+    id: generateUniqueId(),
     name: 'New Product 5',
     price: 500
   }
@@ -35,16 +35,12 @@ export const mockProducts: Product[] = [
 
 export const createNewEmptyProduct = (): Product => {
   const productToAdd: Product = {
-    id: uuidv4(),
+    id: generateUniqueId(),
     name: 'New Product',
     price: 0
   }
 
   return productToAdd
-}
-
-export const generateUUID = () => {
-  return uuidv4()
 }
 
 type ProductState = {
@@ -86,7 +82,6 @@ export const productSlice = createSlice({
   initialState,
   reducers: {
     setWishlist: (state, action) => {
-      console.log('teste')
       const productToUpdate = state.products?.find(
         (p) => p.id === action.payload.productId
       )

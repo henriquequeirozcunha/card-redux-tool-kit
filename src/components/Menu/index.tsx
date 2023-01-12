@@ -4,7 +4,7 @@ import * as S from './styles'
 
 const Menu = () => {
   const { products } = useAppSelector((store) => store.products)
-  const productsAmount = products?.length
+  const productsAmount = products?.filter((p) => p.wishList).length
 
   return (
     <S.Wrapper>
@@ -14,7 +14,7 @@ const Menu = () => {
       <S.Title>Product Base</S.Title>
       <S.Menu>
         <S.CartWrapper>
-          {productsAmount && <S.ItemsAmount>{productsAmount}</S.ItemsAmount>}
+          {!!productsAmount && <S.ItemsAmount>{productsAmount}</S.ItemsAmount>}
           <ShoppingCart aria-label="Shopping Cart" />
         </S.CartWrapper>
       </S.Menu>

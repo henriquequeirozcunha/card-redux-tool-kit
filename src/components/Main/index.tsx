@@ -1,11 +1,13 @@
 import Button from 'components/Button'
 import Card from 'components/Card'
+import { CreateBasketPaymentIntent } from 'core/application/services/basket'
+import { generateUniqueId } from 'core/application/utils'
 import { Product } from 'core/domain/entities/product'
 import { useEffect } from 'react'
+import { createBasketPaymentIntentAsync } from 'store/basketSlice'
 import { useAppDispatch, useAppSelector } from 'store/configureStore'
 import {
   addProduct,
-  generateUUID,
   listProductsAsync,
   removeProduct,
   setProduct,
@@ -41,7 +43,7 @@ const Main = ({
       ...product,
       price: 1200,
       wishList: true,
-      id: generateUUID()
+      id: generateUniqueId()
     }
 
     dispatch(addProduct(productToAdd))
@@ -49,6 +51,22 @@ const Main = ({
 
   const handleRemoveItem = (id: string) => {
     dispatch(removeProduct({ id }))
+  }
+
+  const handleCreateBasket = () => {
+    const productsWithlist = products?.filter((p) => p.wishList)
+
+    if (!productsWithlist?.length) return
+
+    const data: CreateBasketPaymentIntent.Command = {
+      products: productsWithlist,
+      totalPrice: productsWithlist?.reduce(
+        (acc, item) => (acc += item.price),
+        0
+      )
+    }
+
+    dispatch(createBasketPaymentIntentAsync(data))
   }
 
   if (status && status.includes('pending')) {
@@ -80,6 +98,7 @@ const Main = ({
                 onChange={(v) => handleInput('name', v.target.value)}
               />
               <Button onClick={() => handleAddProduct()}>Adicionar</Button>
+              <Button onClick={() => handleCreateBasket()}>Fazer Pedido</Button>
             </S.CardForm>
 
             <S.CardListWrapper>
