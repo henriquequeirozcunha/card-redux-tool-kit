@@ -85,6 +85,16 @@ export const productSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
+    setWishlist: (state, action) => {
+      console.log('teste')
+      const productToUpdate = state.products?.find(
+        (p) => p.id === action.payload.productId
+      )
+
+      if (productToUpdate) {
+        productToUpdate.wishList = !productToUpdate.wishList
+      }
+    },
     setProduct: (state, action) => {
       state.product = action.payload
     },
@@ -124,5 +134,10 @@ export const productSlice = createSlice({
   }
 })
 
-export const { setProduct, setProducts, addProduct, removeProduct } =
-  productSlice.actions
+export const {
+  setWishlist,
+  setProduct,
+  setProducts,
+  addProduct,
+  removeProduct
+} = productSlice.actions
