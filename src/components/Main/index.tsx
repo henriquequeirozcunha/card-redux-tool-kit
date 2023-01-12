@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from 'store/configureStore'
 import {
   addProduct,
   generateUUID,
+  listProductsAsync,
   removeProduct,
   setProduct,
   setProducts
@@ -17,11 +18,14 @@ const Main = ({
   title = 'React Avançado',
   description = 'Typescript, ReactJS, NextJS e Styled Component'
 }) => {
-  const { products, product } = useAppSelector((store) => store.products)
+  const { products, product, status } = useAppSelector(
+    (store) => store.products
+  )
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(setProducts())
+    //dispatch(setProducts())
+    dispatch(listProductsAsync({}))
   }, [])
 
   const handleInput = (field: string, value: string) => {
@@ -45,6 +49,14 @@ const Main = ({
 
   const handleRemoveItem = (id: string) => {
     dispatch(removeProduct({ id }))
+  }
+
+  if (status && status.includes('pending')) {
+    return (
+      <Base>
+        <h1>loading</h1>
+      </Base>
+    )
   }
 
   return (

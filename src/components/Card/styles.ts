@@ -42,3 +42,9 @@ export const Footer = styled.div`
     justify-content: center;
   `}
 `
+export const FavIconWrapper = styled.div`
+  ${({ theme }) => css`
+    width: 2rem;
+    height: 2rem;
+  `}
+`
