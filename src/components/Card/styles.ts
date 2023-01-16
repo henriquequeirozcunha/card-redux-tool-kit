@@ -15,6 +15,12 @@ export const Header = styled.div`
   ${({ theme }) => css``}
 `
 
+export const CardTitle = styled.h3`
+  ${({ theme }) => css`
+    cursor: pointer;
+  `}
+`
+
 export const Content = styled.div`
   ${({ theme }) => css`
     flex: 1;
@@ -31,8 +37,16 @@ export const ImageWrapper = styled.div`
 
 export const Footer = styled.div`
   ${({ theme }) => css`
-    padding: ${theme.spacings.xxsmall};
+    padding: ${theme.spacings.small};
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+  `}
+`
+export const FavIconWrapper = styled.div`
+  ${({ theme }) => css`
+    cursor: pointer;
+    width: 4rem;
+    height: 4rem;
+    color: ${theme.colors.primary};
   `}
 `
