@@ -27,33 +27,33 @@ const productAdapter = createEntityAdapter<Product>()
 export const getProductAsync = createAsyncThunk<
   GetProduct.Output,
   GetProduct.Query
->('product/getProductAsync', async ({ id }) => {
+>('product/getProductAsync', async ({ id }, thunkApi) => {
   try {
     return await new GetProduct().handle({ id })
-  } catch (error) {
-    console.log('error', error)
+  } catch (error: any) {
+    thunkApi.rejectWithValue({ error: error.data })
   }
 })
 
 export const listProductsAsync = createAsyncThunk<
   ListProducts.Output,
   ListProducts.Query
->('product/listProductsAsync', async ({ id, type } = {}) => {
+>('product/listProductsAsync', async ({ id, type } = {}, thunkApi) => {
   try {
     return await new ListProducts().load()
-  } catch (error) {
-    console.log('error', error)
+  } catch (error: any) {
+    thunkApi.rejectWithValue({ error: error.data })
   }
 })
 
 export const addProductAsync = createAsyncThunk<
   AddProduct.Output,
   AddProduct.Command
->('product/addProductAsync', async ({ produtct }) => {
+>('product/addProductAsync', async ({ produtct }, thunkApi) => {
   try {
     await new AddProduct().handle()
-  } catch (error) {
-    console.log('error', error)
+  } catch (error: any) {
+    thunkApi.rejectWithValue({ error: error.data })
   }
 })
 
