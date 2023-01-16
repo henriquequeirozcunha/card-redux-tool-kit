@@ -5,6 +5,7 @@ import {
 } from '@reduxjs/toolkit'
 import { Basket } from 'core/domain/entities/basket'
 import { CreateBasketPaymentIntent } from '../core/application/services/basket/create-basket-payment-intent'
+import { RootState } from './configureStore'
 
 const basketAdapter = createEntityAdapter<Basket>()
 
@@ -31,6 +32,21 @@ export const basketSlice = createSlice({
   reducers: {
     setConfirmed: (state, action) => {
       console.log('setConfirmed')
+    },
+    setProductQuantity: (state, action) => {
+      const { basketId, productId } = action.payload
+
+      const basketToUpdate = state.entities[basketId]
+
+      if (basketToUpdate) {
+        const productToUpdate = basketToUpdate.products.find(
+          (p) => p.id === productId
+        )
+
+        if (productToUpdate) {
+          productToUpdate.quantity = (productToUpdate.quantity || 1) + 1
+        }
+      }
     }
   },
   extraReducers: (builder) => {
@@ -58,3 +74,9 @@ export const basketSlice = createSlice({
     })
   }
 })
+
+export const basketSelectors = basketAdapter.getSelectors(
+  (state: RootState) => state.basket
+)
+
+export const { setProductQuantity, setConfirmed } = basketSlice.actions

@@ -1,59 +1,39 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { AddProduct, ListProducts } from 'core/application/services/products'
+import {
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice
+} from '@reduxjs/toolkit'
+import {
+  AddProduct,
+  GetProduct,
+  ListProducts
+} from 'core/application/services/products'
 import { Product } from 'core/domain/entities/product'
-import { generateUniqueId } from 'core/application/utils'
-
-export const mockProducts: Product[] = [
-  {
-    id: generateUniqueId(),
-    name: 'New Product 1',
-    price: 100,
-    pictureUrl: '/img/logo.svg'
-  },
-  {
-    id: generateUniqueId(),
-    name: 'New Product 2',
-    price: 200
-  },
-  {
-    id: generateUniqueId(),
-    name: 'New Product 3',
-    price: 300,
-    pictureUrl: '/img/logo.svg'
-  },
-  {
-    id: generateUniqueId(),
-    name: 'New Product 4',
-    price: 400
-  },
-  {
-    id: generateUniqueId(),
-    name: 'New Product 5',
-    price: 500
-  }
-]
+import { RootState } from './configureStore'
 
 export const createNewEmptyProduct = (): Product => {
   const productToAdd: Product = {
-    id: generateUniqueId(),
+    id: '',
     name: 'New Product',
-    price: 0
+    price: 0,
+    pictureUrl: '/img/hero-illustration.svg'
   }
 
   return productToAdd
 }
 
-type ProductState = {
-  products: Product[] | undefined
-  product: Product | null
-  status: string
-}
+const productAdapter = createEntityAdapter<Product>()
 
-const initialState: ProductState = {
-  products: [],
-  product: null,
-  status: 'idle'
-}
+export const getProductAsync = createAsyncThunk<
+  GetProduct.Output,
+  GetProduct.Query
+>('product/getProductAsync', async ({ id }) => {
+  try {
+    return await new GetProduct().handle({ id })
+  } catch (error) {
+    console.log('error', error)
+  }
+})
 
 export const listProductsAsync = createAsyncThunk<
   ListProducts.Output,
@@ -79,31 +59,23 @@ export const addProductAsync = createAsyncThunk<
 
 export const productSlice = createSlice({
   name: 'product',
-  initialState,
+  initialState: productAdapter.getInitialState({
+    status: 'idle'
+  }),
   reducers: {
     setWishlist: (state, action) => {
-      const productToUpdate = state.products?.find(
-        (p) => p.id === action.payload.productId
-      )
+      const productToUpdate = state.entities[action.payload.productId]
 
       if (productToUpdate) {
         productToUpdate.wishList = !productToUpdate.wishList
       }
     },
-    setProduct: (state, action) => {
-      state.product = action.payload
-    },
-    setProducts: (state) => {
-      state.products = mockProducts
-    },
-    addProduct: (state, action) => {
-      state.products?.push(action.payload)
-    },
-    removeProduct: (state, action) => {
+    getProduct: (state, action) => {
       const { id } = action.payload
-
-      state.products = state.products?.filter((p) => p.id !== id)
-    }
+    },
+    setProduct: productAdapter.updateOne,
+    addProduct: productAdapter.addOne,
+    removeProduct: productAdapter.removeOne
   },
   extraReducers: (builder) => {
     builder.addCase(listProductsAsync.pending, (state) => {
@@ -111,28 +83,34 @@ export const productSlice = createSlice({
     })
     builder.addCase(listProductsAsync.fulfilled, (state, action) => {
       state.status = 'idle'
-      state.products = action.payload
+
+      if (action.payload?.length) {
+        productAdapter.setAll(state, action.payload)
+      }
     })
     builder.addCase(listProductsAsync.rejected, (state) => {
       state.status = 'idle'
     })
 
-    // builder.addCase(addProductAsync.pending, (state) => {
-    //   state.status = 'pendingAddProducts'
-    // })
-    // builder.addCase(addProductAsync.fulfilled, (state) => {
-    //   state.status = 'idle'
-    // })
-    // builder.addCase(addProductAsync.rejected, (state) => {
-    //   state.status = 'idle'
-    // })
+    builder.addCase(getProductAsync.pending, (state) => {
+      state.status = 'pendinggetProduct'
+    })
+    builder.addCase(getProductAsync.fulfilled, (state, action) => {
+      state.status = 'idle'
+
+      if (action.payload) {
+        productAdapter.upsertOne(state, action.payload)
+      }
+    })
+    builder.addCase(getProductAsync.rejected, (state) => {
+      state.status = 'idle'
+    })
   }
 })
 
-export const {
-  setWishlist,
-  setProduct,
-  setProducts,
-  addProduct,
-  removeProduct
-} = productSlice.actions
+export const { setWishlist, setProduct, addProduct, removeProduct } =
+  productSlice.actions
+
+export const productSelectors = productAdapter.getSelectors(
+  (state: RootState) => state.products
+)

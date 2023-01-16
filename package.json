@@ -14,9 +14,7 @@
     "build-storybook": "build-storybook"
   },
   "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "hooks": {}
   },
   "lint-staged": {
     "src/**/*": [

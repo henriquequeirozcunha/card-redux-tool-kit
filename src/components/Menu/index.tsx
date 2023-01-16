@@ -1,10 +1,17 @@
 import { ShoppingCart } from '@styled-icons/material-outlined/ShoppingCart'
+import { basketSelectors } from 'store/basketSlice'
 import { useAppSelector } from 'store/configureStore'
+import { productSelectors } from 'store/productSlice'
 import * as S from './styles'
 
 const Menu = () => {
-  const { products } = useAppSelector((store) => store.products)
+  const products = useAppSelector(productSelectors.selectAll)
+  const baskets = useAppSelector(basketSelectors.selectEntities)
   const productsAmount = products?.filter((p) => p.wishList).length
+
+  const handleGoToBasketPage = () => {
+    console.log('baskets', baskets)
+  }
 
   return (
     <S.Wrapper>
@@ -13,7 +20,7 @@ const Menu = () => {
       </S.LogoWrapper>
       <S.Title>Product Base</S.Title>
       <S.Menu>
-        <S.CartWrapper>
+        <S.CartWrapper onClick={() => handleGoToBasketPage()}>
           {!!productsAmount && <S.ItemsAmount>{productsAmount}</S.ItemsAmount>}
           <ShoppingCart aria-label="Shopping Cart" />
         </S.CartWrapper>

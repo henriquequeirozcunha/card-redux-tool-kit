@@ -6,7 +6,7 @@ import { basketSlice } from './basketSlice'
 export const globalStore = configureStore({
   reducer: {
     products: productSlice.reducer,
-    basketSlice: basketSlice.reducer
+    basket: basketSlice.reducer
   }
 })
 

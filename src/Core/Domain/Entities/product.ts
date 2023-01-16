@@ -4,4 +4,6 @@ export type Product = {
   price: number
   pictureUrl?: string
   wishList?: boolean
+  description?: string
+  quantity?: number
 }

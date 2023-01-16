@@ -3,15 +3,15 @@ import Card from 'components/Card'
 import { CreateBasketPaymentIntent } from 'core/application/services/basket'
 import { generateUniqueId } from 'core/application/utils'
 import { Product } from 'core/domain/entities/product'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { createBasketPaymentIntentAsync } from 'store/basketSlice'
 import { useAppDispatch, useAppSelector } from 'store/configureStore'
 import {
   addProduct,
+  createNewEmptyProduct,
   listProductsAsync,
-  removeProduct,
-  setProduct,
-  setProducts
+  productSelectors,
+  removeProduct
 } from 'store/productSlice'
 import Base from 'templates/Base'
 import * as S from './styles'
@@ -20,18 +20,19 @@ const Main = ({
   title = 'React Avançado',
   description = 'Typescript, ReactJS, NextJS e Styled Component'
 }) => {
-  const { products, product, status } = useAppSelector(
-    (store) => store.products
-  )
+  const { status } = useAppSelector((state) => state.products)
+  const products = useAppSelector(productSelectors.selectAll)
   const dispatch = useAppDispatch()
+  const [product, setProduct] = useState<Product>(createNewEmptyProduct())
 
   useEffect(() => {
-    //dispatch(setProducts())
     dispatch(listProductsAsync({}))
-  }, [])
+  }, [dispatch])
 
   const handleInput = (field: string, value: string) => {
-    dispatch(setProduct({ ...product, [field]: value }))
+    if (product) {
+      setProduct({ ...product, [field]: value })
+    }
   }
 
   const handleAddProduct = () => {
@@ -50,7 +51,7 @@ const Main = ({
   }
 
   const handleRemoveItem = (id: string) => {
-    dispatch(removeProduct({ id }))
+    dispatch(removeProduct(id))
   }
 
   const handleCreateBasket = () => {

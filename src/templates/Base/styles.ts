@@ -19,6 +19,8 @@ export const Content = styled.div`
     flex: 1;
     display: flex;
     flex-direction: column;
+
+    margin-top: ${theme.spacings.large};
   `}
 `
 
