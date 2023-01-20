@@ -1,14 +1,9 @@
-import Button from 'components/Button'
 import Card from 'components/Card'
-import { CreateBasketPaymentIntent } from 'core/application/services/basket'
-import { generateUniqueId } from 'core/application/utils'
-import { Product } from 'core/domain/entities/product'
-import { useEffect, useState } from 'react'
-import { createBasketPaymentIntentAsync } from 'store/basketSlice'
+import CardForm from 'components/CardForm'
+import ProductFilters from 'components/ProductFilters'
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'store/configureStore'
 import {
-  addProduct,
-  createNewEmptyProduct,
   listProductsAsync,
   productSelectors,
   removeProduct
@@ -23,51 +18,13 @@ const Main = ({
   const { status } = useAppSelector((state) => state.products)
   const products = useAppSelector(productSelectors.selectAll)
   const dispatch = useAppDispatch()
-  const [product, setProduct] = useState<Product>(createNewEmptyProduct())
 
   useEffect(() => {
     dispatch(listProductsAsync({}))
   }, [dispatch])
 
-  const handleInput = (field: string, value: string) => {
-    if (product) {
-      setProduct({ ...product, [field]: value })
-    }
-  }
-
-  const handleAddProduct = () => {
-    if (!product?.name) {
-      return
-    }
-
-    const productToAdd: Product = {
-      ...product,
-      price: 1200,
-      wishList: true,
-      id: generateUniqueId()
-    }
-
-    dispatch(addProduct(productToAdd))
-  }
-
   const handleRemoveItem = (id: string) => {
     dispatch(removeProduct(id))
-  }
-
-  const handleCreateBasket = () => {
-    const productsWithlist = products?.filter((p) => p.wishList)
-
-    if (!productsWithlist?.length) return
-
-    const data: CreateBasketPaymentIntent.Command = {
-      products: productsWithlist,
-      totalPrice: productsWithlist?.reduce(
-        (acc, item) => (acc += item.price),
-        0
-      )
-    }
-
-    dispatch(createBasketPaymentIntentAsync(data))
   }
 
   if (status && status.includes('pending')) {
@@ -81,27 +38,21 @@ const Main = ({
   return (
     <Base>
       <S.Wrapper>
-        <S.Logo
-          src="/img/logo.svg"
-          alt="Imagem de um átomo com os textos React Avançado"
-        />
-        <S.Title>{title}</S.Title>
-        <S.Description>{description}</S.Description>
+        <S.Header>
+          <S.Logo
+            src="/img/logo.svg"
+            alt="Imagem de um átomo com os textos React Avançado"
+          />
+          <S.Title>{title}</S.Title>
+          <S.Description>{description}</S.Description>
+        </S.Header>
 
-        <S.Container>
-          <S.Title>My Container</S.Title>
-          <S.Content>
-            <S.CardForm>
-              <label htmlFor="name">Nome do Produto</label>
-              <input
-                type="text"
-                name="name"
-                onChange={(v) => handleInput('name', v.target.value)}
-              />
-              <Button onClick={() => handleAddProduct()}>Adicionar</Button>
-              <Button onClick={() => handleCreateBasket()}>Fazer Pedido</Button>
-            </S.CardForm>
+        <S.MainContent>
+          <S.FiltersWrapper>
+            <ProductFilters />
+          </S.FiltersWrapper>
 
+          <S.Container>
             <S.CardListWrapper>
               {products?.map((product) => (
                 <Card
@@ -111,8 +62,12 @@ const Main = ({
                 />
               ))}
             </S.CardListWrapper>
-          </S.Content>
-        </S.Container>
+          </S.Container>
+
+          <S.CardFormWrapper>
+            <CardForm />
+          </S.CardFormWrapper>
+        </S.MainContent>
       </S.Wrapper>
     </Base>
   )

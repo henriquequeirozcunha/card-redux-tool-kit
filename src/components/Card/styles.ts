@@ -8,6 +8,8 @@ export const Wrapper = styled.div`
 
     min-height: 20rem;
     box-shadow: 0 0.4rem 0.5rem 0 rgba(0, 0, 0, 0.2);
+    background-color: ${theme.colors.white};
+    border-radius: ${theme.border.radius};
   `}
 `
 

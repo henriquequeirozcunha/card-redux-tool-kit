@@ -1,4 +1,5 @@
 import Menu from 'components/Menu'
+import SideMenu from 'components/SideMenu'
 import * as S from './styles'
 
 export type BaseProps = {
@@ -7,6 +8,7 @@ export type BaseProps = {
 
 const Base = ({ children }: BaseProps) => (
   <S.Wrapper>
+    <SideMenu />
     <S.Header>
       <Menu />
     </S.Header>

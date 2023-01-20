@@ -20,6 +20,7 @@ export const CartWrapper = styled.div`
     height: 3rem;
 
     position: relative;
+    cursor: pointer;
   `}
 `
 

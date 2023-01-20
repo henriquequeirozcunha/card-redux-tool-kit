@@ -1,16 +1,18 @@
 import { ShoppingCart } from '@styled-icons/material-outlined/ShoppingCart'
+import { useRouter } from 'next/dist/client/router'
 import { basketSelectors } from 'store/basketSlice'
 import { useAppSelector } from 'store/configureStore'
 import { productSelectors } from 'store/productSlice'
 import * as S from './styles'
 
 const Menu = () => {
+  const router = useRouter()
   const products = useAppSelector(productSelectors.selectAll)
   const baskets = useAppSelector(basketSelectors.selectEntities)
   const productsAmount = products?.filter((p) => p.wishList).length
 
   const handleGoToBasketPage = () => {
-    console.log('baskets', baskets)
+    router.push('/basket')
   }
 
   return (

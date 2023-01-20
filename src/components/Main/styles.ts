@@ -1,4 +1,3 @@
-import * as ButtonStyles from 'components/Button/styles'
 import styled, { css } from 'styled-components'
 
 export const Wrapper = styled.main`
@@ -10,8 +9,20 @@ export const Wrapper = styled.main`
   display: flex;
   flex-direction: column;
   text-align: center;
-  justify-content: center;
-  align-items: center;
+`
+
+export const Header = styled.div`
+  ${({ theme }) => css`
+    margin-bottom: 2rem;
+  `}
+`
+
+export const MainContent = styled.div`
+  ${({ theme }) => css`
+    flex: 1;
+    display: grid;
+    grid-template-columns: 0.2fr 1fr 0.2fr;
+  `}
 `
 
 export const Logo = styled.img`
@@ -35,18 +46,18 @@ export const Illustration = styled.img`
 
 export const Container = styled.div`
   ${({ theme }) => css`
-    max-height: 70rem;
-    min-height: 20rem;
-    overflow-y: scroll;
-    width: 80%;
-    margin-top: 10rem;
+    flex: 1;
+    margin-top: 5rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding: ${theme.spacings.xsmall} ${theme.spacings.xlarge};
 
     color: ${theme.colors.black};
-    background-color: ${theme.colors.white};
   `}
+`
+
+export const FiltersWrapper = styled.div`
+  ${({ theme }) => css``}
 `
 
 export const Content = styled.div`
@@ -59,9 +70,10 @@ export const Content = styled.div`
   `}
 `
 
-export const CardForm = styled.div`
+export const CardFormWrapper = styled.div`
   ${({ theme }) => css`
-    margin-bottom: 5rem;
+    background-color: ${theme.colors.white};
+    padding: ${theme.spacings.xsmall} ${theme.spacings.xlarge};
   `}
 `
 
