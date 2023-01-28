@@ -47,6 +47,13 @@ ${({ theme }) => css`
     font-family: ${theme.font.family};
     font-size: ${theme.font.sizes.medium};
     background-color: ${theme.colors.mainBg};
+
+    height: 100vh;
+  }
+
+  div#__next,
+  div#__next > div {
+    height: 100%;
   }
 `}
 `

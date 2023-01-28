@@ -8,8 +8,8 @@ export type BaseProps = {
 
 const Base = ({ children }: BaseProps) => (
   <S.Wrapper>
-    <SideMenu />
     <S.Header>
+      <SideMenu />
       <Menu />
     </S.Header>
 

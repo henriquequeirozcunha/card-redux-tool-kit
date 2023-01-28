@@ -6,7 +6,6 @@ export const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
 
-    border: 1px solid red;
     color: ${theme.colors.white};
 
     padding: ${theme.spacings.small};

@@ -4,7 +4,10 @@ import {
   createSlice
 } from '@reduxjs/toolkit'
 import { Basket } from 'core/domain/entities/basket'
-import { CreateBasketPaymentIntent } from '../core/application/services/basket/create-basket-payment-intent'
+import {
+  CreateBasketPaymentIntent,
+  RemoveBasketItem
+} from '../core/application/services/basket'
 import { RootState } from './configureStore'
 
 const basketAdapter = createEntityAdapter<Basket>()
@@ -17,6 +20,20 @@ export const createBasketPaymentIntentAsync = createAsyncThunk<
     return await new CreateBasketPaymentIntent().handle({
       products,
       totalPrice
+    })
+  } catch (error) {
+    console.log('error', error)
+  }
+})
+
+export const removeBasketItemAsync = createAsyncThunk<
+  RemoveBasketItem.Output | undefined,
+  RemoveBasketItem.Command
+>('basket/RemoveBasketItemAsync', async ({ basketId, productId }) => {
+  try {
+    return await new RemoveBasketItem().handle({
+      basketId,
+      productId
     })
   } catch (error) {
     console.log('error', error)
@@ -70,6 +87,25 @@ export const basketSlice = createSlice({
       }
     )
     builder.addCase(createBasketPaymentIntentAsync.rejected, (state) => {
+      state.status = 'idle'
+    })
+    builder.addCase(removeBasketItemAsync.pending, (state, action) => {
+      state.status = `pendingRemoveBasketItem_${action.meta.arg.productId}`
+    })
+    builder.addCase(removeBasketItemAsync.fulfilled, (state, action) => {
+      state.status = 'idle'
+
+      const basketToUpdate = state.entities[action.meta.arg.basketId]
+
+      console.log('basketToUpdate', basketToUpdate)
+
+      if (basketToUpdate) {
+        basketToUpdate.products = basketToUpdate.products.filter(
+          (product) => product.id !== action.meta.arg.productId
+        )
+      }
+    })
+    builder.addCase(removeBasketItemAsync.rejected, (state) => {
       state.status = 'idle'
     })
   }

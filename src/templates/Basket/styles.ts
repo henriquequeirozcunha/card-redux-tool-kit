@@ -2,10 +2,16 @@ import styled, { css } from 'styled-components'
 
 export const Wrapper = styled.div`
   ${({ theme }) => css`
-    background-color: ${theme.colors.white};
     align-self: center;
-    height: 80vh;
 
     width: 90%;
+  `}
+`
+export const ProductsWrapper = styled.div`
+  ${({ theme }) => css`
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
   `}
 `
