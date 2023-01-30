@@ -42,8 +42,11 @@ export const Title = styled.h1`
   ${({ theme }) => css``}
 `
 
-export const Menu = styled.h1`
-  ${({ theme }) => css``}
+export const Menu = styled.div`
+  ${({ theme }) => css`
+    display: flex;
+    gap: ${theme.spacings.small};
+  `}
 `
 
 export const ItemsAmount = styled.span`
@@ -59,5 +62,16 @@ export const ItemsAmount = styled.span`
     display: flex;
     justify-content: center;
     align-items: center;
+  `}
+`
+
+export const DropdownMenuWrapper = styled.div`
+  ${({ theme }) => css`
+    color: ${theme.colors.white};
+    width: 3rem;
+    height: 3rem;
+
+    position: relative;
+    cursor: pointer;
   `}
 `

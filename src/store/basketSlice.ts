@@ -15,28 +15,33 @@ const basketAdapter = createEntityAdapter<Basket>()
 export const createBasketPaymentIntentAsync = createAsyncThunk<
   CreateBasketPaymentIntent.Output | undefined,
   CreateBasketPaymentIntent.Command
->('basket/createBasketPaymentIntentAsync', async ({ products, totalPrice }) => {
-  try {
-    return await new CreateBasketPaymentIntent().handle({
-      products,
-      totalPrice
-    })
-  } catch (error) {
-    console.log('error', error)
+>(
+  'basket/createBasketPaymentIntentAsync',
+  async ({ products, totalPrice }, thunkAPI) => {
+    try {
+      return await new CreateBasketPaymentIntent().handle({
+        products,
+        totalPrice
+      })
+    } catch (error: any) {
+      console.log('error', error)
+      return thunkAPI.rejectWithValue({ error: error.data })
+    }
   }
-})
+)
 
 export const removeBasketItemAsync = createAsyncThunk<
   RemoveBasketItem.Output | undefined,
   RemoveBasketItem.Command
->('basket/RemoveBasketItemAsync', async ({ basketId, productId }) => {
+>('basket/RemoveBasketItemAsync', async ({ basketId, productId }, thunkAPI) => {
   try {
     return await new RemoveBasketItem().handle({
       basketId,
       productId
     })
-  } catch (error) {
+  } catch (error: any) {
     console.log('error', error)
+    return thunkAPI.rejectWithValue({ error: error.data })
   }
 })
 
