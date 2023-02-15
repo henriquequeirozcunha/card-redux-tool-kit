@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
     position: fixed;
     top: 0;
     left: 0;
+    z-index: ${theme.layers.alwaysOnTop};
 
     //transform: translateX(-30rem);
   `}
@@ -19,7 +20,6 @@ export const Container = styled.div<ContainerProps>`
     position: relative;
     transform: ${IsOpen ? 'translateX(0)' : 'translateX(-26rem)'};
     transition: all 0.3s ease-in;
-    z-index: ${theme.layers.alwaysOnTop};
   `}
 `
 

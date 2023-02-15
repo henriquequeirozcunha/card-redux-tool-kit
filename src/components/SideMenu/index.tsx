@@ -1,4 +1,5 @@
 import { PlusCircle } from '@styled-icons/heroicons-solid/PlusCircle'
+import Link from 'next/link'
 import { useState } from 'react'
 import * as S from './styles'
 
@@ -21,9 +22,11 @@ const SideMenu = () => {
         <S.Content>
           <S.Navbar>
             <S.ListGroup>
-              <S.ListName>Group 1</S.ListName>
+              <S.ListName>Cadastros</S.ListName>
               <S.ListItem>
-                <S.LinkItem href="#">Link 1</S.LinkItem>
+                <Link href="/product" passHref>
+                  <S.LinkItem href="#">Produto</S.LinkItem>
+                </Link>
               </S.ListItem>
               <S.ListItem>
                 <S.LinkItem href="#">Link 1</S.LinkItem>

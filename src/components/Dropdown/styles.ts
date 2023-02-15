@@ -10,7 +10,6 @@ export const Title = styled.div`
 export const Content = styled.div`
   ${({ theme }) => css`
     position: absolute;
-    transform: translateY(3rem);
     padding: 0 ${theme.spacings.small};
     margin-top: ${theme.spacings.small};
 

@@ -29,6 +29,22 @@ export const Footer = styled.div`
     display: flex;
     flex-direction: column;
 
-    background-color: red;
+    min-height: 20rem;
+
+    background-color: white;
+    clip-path: polygon(0 0, 100% 3rem, 100% 100%, 0 100%);
+  `}
+`
+
+export const FooterContent = styled.div`
+  ${({ theme }) => css`
+    padding: 0 3rem;
+    flex: 1;
+    margin-top: 3rem;
+    display: grid;
+    justify-items: center;
+
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 1rem;
   `}
 `
