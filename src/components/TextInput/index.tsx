@@ -4,12 +4,14 @@ import * as S from './styles'
 type TextInputProps = {
   property: string
   label: string
+  span?: string | undefined
   onInputChange: (value: string) => void
 } & InputHTMLAttributes<HTMLInputElement>
 
 const TextInput = ({
   property,
   label,
+  span = '3',
   onInputChange,
   ...props
 }: TextInputProps) => {
@@ -24,7 +26,7 @@ const TextInput = ({
   }
 
   return (
-    <S.Wrapper>
+    <S.Wrapper span={span}>
       <S.Input
         type="text"
         name={property}

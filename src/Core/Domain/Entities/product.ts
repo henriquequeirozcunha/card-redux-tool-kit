@@ -1,3 +1,5 @@
+import { Category } from './category'
+
 export type Product = {
   id: string
   name: string
@@ -6,4 +8,7 @@ export type Product = {
   wishList?: boolean
   description?: string
   quantity?: number
+  categoryId?: string
+  category?: Category
+  suspended?: boolean
 }

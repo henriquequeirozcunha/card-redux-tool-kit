@@ -1,14 +1,32 @@
 import styled, { css } from 'styled-components'
 
-export const Wrapper = styled.div`
-  ${({ theme }) => css`
+type WrapperProps = {
+  span: string | undefined
+}
+
+const wrapperModifiers = {
+  withSpan: (span: string) => css`
+    grid-column: ${`span ${span}`};
+  `,
+  fullWidth: () => css`
+    grid-column: 1 / -1;
+  `
+}
+
+export const Wrapper = styled.div<WrapperProps>`
+  ${({ theme, span }) => css`
     position: relative;
+    width: 100%;
+
+    ${span && span === 'full' && wrapperModifiers.fullWidth()}
+    ${span && span !== 'full' && wrapperModifiers.withSpan(span)}
   `}
 `
 
 export const Input = styled.input`
   ${({ theme }) => css`
     padding: ${theme.spacings.xxsmall};
+    width: 100%;
 
     &:focus ~ label,
     &:hover ~ label {

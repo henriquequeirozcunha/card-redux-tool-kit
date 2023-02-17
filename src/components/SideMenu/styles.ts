@@ -4,12 +4,13 @@ type ContainerProps = {
   IsOpen: boolean
 }
 
-export const Wrapper = styled.div`
-  ${({ theme }) => css`
+export const Wrapper = styled.div<ContainerProps>`
+  ${({ theme, IsOpen }) => css`
     position: fixed;
     top: 0;
     left: 0;
-    z-index: ${theme.layers.alwaysOnTop};
+
+    z-index: ${IsOpen ? `${theme.layers.alwaysOnTop}` : 0};
 
     //transform: translateX(-30rem);
   `}
@@ -17,6 +18,7 @@ export const Wrapper = styled.div`
 
 export const Container = styled.div<ContainerProps>`
   ${({ theme, IsOpen }) => css`
+    width: 0;
     position: relative;
     transform: ${IsOpen ? 'translateX(0)' : 'translateX(-26rem)'};
     transition: all 0.3s ease-in;

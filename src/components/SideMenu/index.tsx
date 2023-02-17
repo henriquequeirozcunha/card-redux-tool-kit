@@ -13,7 +13,7 @@ const SideMenu = () => {
   }
 
   return (
-    <S.Wrapper onClick={() => handleClickOutside()}>
+    <S.Wrapper IsOpen={IsOpen} onClick={() => handleClickOutside()}>
       <S.Container IsOpen={IsOpen}>
         <S.FloatButton onClick={() => setIsOpen(!IsOpen)}>
           <PlusCircle fill="white" width="80%" />
