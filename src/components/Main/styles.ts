@@ -21,7 +21,7 @@ export const MainContent = styled.div`
   ${({ theme }) => css`
     flex: 1;
     display: grid;
-    grid-template-columns: 0.2fr 1fr 0.2fr;
+    grid-template-columns: 20% 1fr 20%;
   `}
 `
 
@@ -57,7 +57,9 @@ export const Container = styled.div`
 `
 
 export const FiltersWrapper = styled.div`
-  ${({ theme }) => css``}
+  ${({ theme }) => css`
+    overflow-wrap: anywhere;
+  `}
 `
 
 export const Content = styled.div`
@@ -73,7 +75,7 @@ export const Content = styled.div`
 export const CardFormWrapper = styled.div`
   ${({ theme }) => css`
     background-color: ${theme.colors.white};
-    padding: ${theme.spacings.xsmall} ${theme.spacings.xlarge};
+    padding: ${theme.spacings.xsmall};
   `}
 `
 

@@ -1,4 +1,5 @@
 import Button from 'components/Button'
+import Checkbox from 'components/Checkbox'
 import TextInput from 'components/TextInput'
 import { Product } from 'core/domain/entities'
 import { useState } from 'react'
@@ -8,13 +9,14 @@ import * as S from './styles'
 const defaultValues: Product = {
   id: '',
   name: '',
-  price: 0
+  price: 0,
+  suspended: false
 }
 
 const ProductForm = () => {
   const [product, setProduct] = useState(defaultValues)
 
-  const handleInput = (property: string, value: string) => {
+  function handleInput<Type = string>(property: string, value: Type) {
     setProduct({ ...product, [property]: value })
   }
 
@@ -44,8 +46,14 @@ const ProductForm = () => {
             <TextInput
               label="Categoria"
               property="category"
-              span="full"
+              span="8"
               onInputChange={(v) => handleInput('category', v)}
+            />
+
+            <Checkbox
+              label="Suspenso"
+              labelFor="suspended"
+              onCheck={(status) => handleInput<boolean>('suspended', status)}
             />
           </S.Row>
         </S.Content>
