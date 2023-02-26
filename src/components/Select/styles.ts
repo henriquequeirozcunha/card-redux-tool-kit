@@ -19,11 +19,7 @@ export const Wrapper = styled.main<WrapperProps>`
 `
 
 export const Title = styled.div`
-  ${({ theme }) =>
-    css`
-      cursor: pointer;
-      z-index: ${theme.layers.alwaysOnTop};
-    `}
+  ${({ theme }) => css``}
 `
 
 const contentModifiers = {
@@ -82,11 +78,23 @@ export const IconWrapper = styled.div`
   `}
 `
 
-export const RemoveIconWrapper = styled(IconWrapper)`
+export const UnSelectIconWrapper = styled(IconWrapper)`
   ${({ theme }) => css`
     cursor: pointer;
   `}
 `
+
+export const ClearFilterIconWrapper = styled(IconWrapper)`
+  ${({ theme }) => css`
+    cursor: pointer;
+
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  `}
+`
+
 export const ButtonGroup = styled.div`
   ${({ theme }) => css`
     margin-top: ${theme.spacings.small};
@@ -96,8 +104,14 @@ export const ButtonGroup = styled.div`
 `
 export const SelectedItemsWrapper = styled.div`
   ${({ theme }) => css`
+    cursor: pointer;
     display: flex;
     flex-wrap: wrap;
+    position: relative;
+
+    min-height: 5rem;
+    padding: 1rem;
+    background-color: white;
   `}
 `
 export const SelectedItem = styled.div`

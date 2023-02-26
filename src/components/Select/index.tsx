@@ -73,17 +73,33 @@ const Select = <T extends ListItem>({
     setlistSelect([...listSelect])
   }
 
+  const handleClearFilter = () => {
+    setlistSelect([...options])
+    setSelectedItems([])
+  }
+
   return (
     <S.Wrapper span={span}>
-      <S.Title onClick={() => handleSetIsOpen()}>{title}</S.Title>
+      <S.Title>{title}</S.Title>
 
-      <S.SelectedItemsWrapper>
+      <S.SelectedItemsWrapper onClick={() => handleSetIsOpen()}>
+        {isMultiple && (
+          <S.ClearFilterIconWrapper onClick={() => handleClearFilter()}>
+            <Close />
+          </S.ClearFilterIconWrapper>
+        )}
+
         {selectedItems.map((item, index) => (
           <S.SelectedItem key={item.value}>
             <span>{item.label}</span>
-            <S.RemoveIconWrapper onClick={() => handleRemoveItem(index)}>
+            <S.UnSelectIconWrapper
+              onClick={(e) => {
+                e.stopPropagation()
+                handleRemoveItem(index)
+              }}
+            >
               <Close />
-            </S.RemoveIconWrapper>
+            </S.UnSelectIconWrapper>
           </S.SelectedItem>
         ))}
       </S.SelectedItemsWrapper>
