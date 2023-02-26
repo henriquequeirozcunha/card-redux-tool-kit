@@ -1,4 +1,5 @@
 import { Category } from './category'
+import { Tag } from './tag'
 
 export type Product = {
   id: string
@@ -11,4 +12,5 @@ export type Product = {
   categoryId?: string
   category?: Category
   suspended?: boolean
+  tags?: Tag[]
 }

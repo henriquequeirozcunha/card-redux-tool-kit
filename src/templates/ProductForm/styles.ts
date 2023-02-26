@@ -37,12 +37,16 @@ export const Footer = styled.div`
   `}
 `
 
-export const Row = styled.div`
-  ${({ theme }) => css`
+type RowProps = {
+  cols?: number
+}
+
+export const Row = styled.div<RowProps>`
+  ${({ theme, cols = 12 }) => css`
     flex: 0 0 100%;
 
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(${cols}, 1fr);
 
     column-gap: 1rem;
   `}

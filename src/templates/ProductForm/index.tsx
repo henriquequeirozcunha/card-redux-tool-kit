@@ -1,5 +1,6 @@
 import Button from 'components/Button'
 import Checkbox from 'components/Checkbox'
+import Select from 'components/Select'
 import TextInput from 'components/TextInput'
 import { Product } from 'core/domain/entities'
 import { useState } from 'react'
@@ -12,6 +13,28 @@ const defaultValues: Product = {
   price: 0,
   suspended: false
 }
+
+const listCategories: {
+  label: string
+  value: string
+  is_principal?: boolean
+}[] = [
+  { label: 'Eletrônicos', value: '1', is_principal: true },
+  { label: 'Limpeza', value: '2' },
+  { label: 'Construção', value: '3' },
+  { label: 'Outros', value: '4' }
+]
+
+const listTags: {
+  label: string
+  value: string
+  is_principal?: boolean
+}[] = [
+  { label: 'Alto Custo', value: '1', is_principal: true },
+  { label: 'Precisa Autorização', value: '2' },
+  { label: 'Urgente', value: '3' },
+  { label: 'Outros', value: '4' }
+]
 
 const ProductForm = () => {
   const [product, setProduct] = useState(defaultValues)
@@ -55,6 +78,12 @@ const ProductForm = () => {
               labelFor="suspended"
               onCheck={(status) => handleInput<boolean>('suspended', status)}
             />
+          </S.Row>
+
+          <S.Row>
+            <Select span="4" title="Categoria" options={listCategories} />
+
+            <Select span="4" isMultiple title="Tags" options={listTags} />
           </S.Row>
         </S.Content>
 
