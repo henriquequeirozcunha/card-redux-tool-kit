@@ -74,7 +74,9 @@ const Select = <T extends ListItem>({
   }
 
   const handleClearFilter = () => {
-    setlistSelect([...options])
+    listSelect.forEach((item) => (item.selected = false))
+
+    setlistSelect([...listSelect])
     setSelectedItems([])
   }
 
@@ -82,9 +84,14 @@ const Select = <T extends ListItem>({
     <S.Wrapper span={span}>
       <S.Title>{title}</S.Title>
 
-      <S.SelectedItemsWrapper onClick={() => handleSetIsOpen()}>
+      <S.InputWrapper onClick={() => handleSetIsOpen()}>
         {isMultiple && (
-          <S.ClearFilterIconWrapper onClick={() => handleClearFilter()}>
+          <S.ClearFilterIconWrapper
+            onClick={(e) => {
+              e.stopPropagation()
+              handleClearFilter()
+            }}
+          >
             <Close />
           </S.ClearFilterIconWrapper>
         )}
@@ -102,30 +109,36 @@ const Select = <T extends ListItem>({
             </S.UnSelectIconWrapper>
           </S.SelectedItem>
         ))}
-      </S.SelectedItemsWrapper>
 
-      <S.Content isOpen={isOpen}>
-        <ul>
-          {listSelect.map((item, index) => (
-            <S.ListItem key={item.value} onClick={() => handleSelect(index)}>
-              {item.label}
-              {item.selected ? (
-                <S.IconWrapper>
-                  <Check />
-                </S.IconWrapper>
-              ) : (
-                ''
-              )}
-            </S.ListItem>
-          ))}
-        </ul>
+        <S.Content isOpen={isOpen}>
+          <ul>
+            {listSelect.map((item, index) => (
+              <S.ListItem
+                key={item.value}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleSelect(index)
+                }}
+              >
+                {item.label}
+                {item.selected ? (
+                  <S.IconWrapper>
+                    <Check />
+                  </S.IconWrapper>
+                ) : (
+                  ''
+                )}
+              </S.ListItem>
+            ))}
+          </ul>
 
-        {isMultiple && (
-          <S.ButtonGroup>
-            <Button onClick={() => handleSubmit()}>Aplicar Filtro</Button>
-          </S.ButtonGroup>
-        )}
-      </S.Content>
+          {isMultiple && (
+            <S.ButtonGroup>
+              <Button onClick={() => handleSubmit()}>Aplicar Filtro</Button>
+            </S.ButtonGroup>
+          )}
+        </S.Content>
+      </S.InputWrapper>
     </S.Wrapper>
   )
 }

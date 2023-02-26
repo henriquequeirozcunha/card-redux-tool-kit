@@ -102,7 +102,7 @@ export const ButtonGroup = styled.div`
     display: flex;
   `}
 `
-export const SelectedItemsWrapper = styled.div`
+export const InputWrapper = styled.div`
   ${({ theme }) => css`
     cursor: pointer;
     display: flex;
