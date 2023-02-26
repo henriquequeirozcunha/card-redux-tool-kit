@@ -10,6 +10,6 @@ export class AddProduct {
 }
 
 export namespace AddProduct {
-  export type Command = { produtct: Product }
+  export type Command = { product: Product }
   export type Output = void
 }

@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
   ${({ theme }) => css`
     flex: 1;
     background-color: ${theme.colors.white};
+    padding: ${theme.spacings.small};
 
     display: flex;
     flex-direction: column;
@@ -12,7 +13,6 @@ export const Wrapper = styled.div`
 
 export const Title = styled.h1`
   ${({ theme }) => css`
-    color: red;
     text-align: center;
 
     margin: ${theme.spacings.small} 0;

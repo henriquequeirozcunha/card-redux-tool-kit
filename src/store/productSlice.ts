@@ -49,7 +49,7 @@ export const listProductsAsync = createAsyncThunk<
 export const addProductAsync = createAsyncThunk<
   AddProduct.Output,
   AddProduct.Command
->('product/addProductAsync', async ({ produtct }, thunkApi) => {
+>('product/addProductAsync', async ({ product }, thunkApi) => {
   try {
     await new AddProduct().handle()
   } catch (error: any) {

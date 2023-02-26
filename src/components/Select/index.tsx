@@ -56,7 +56,7 @@ const Select = <T extends ListItem>({
     setSelectedItems([...currentSelectedItems])
     setIsOpen(false)
 
-    onSubmit && onSubmit(selectedItems)
+    onSubmit && onSubmit(currentSelectedItems)
   }
 
   const handleRemoveItem = (index: number) => {

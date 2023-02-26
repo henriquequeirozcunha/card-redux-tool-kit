@@ -98,6 +98,9 @@ export const ClearFilterIconWrapper = styled(IconWrapper)`
 export const ButtonGroup = styled.div`
   ${({ theme }) => css`
     margin-top: ${theme.spacings.small};
+    padding: 1rem;
+
+    background-color: ${theme.colors.lightGray};
 
     display: flex;
   `}
@@ -111,6 +114,7 @@ export const InputWrapper = styled.div`
 
     min-height: 5rem;
     padding: 1rem;
+    padding-left: 3rem;
     background-color: white;
   `}
 `

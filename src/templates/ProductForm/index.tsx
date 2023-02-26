@@ -2,8 +2,10 @@ import Button from 'components/Button'
 import Checkbox from 'components/Checkbox'
 import Select from 'components/Select'
 import TextInput from 'components/TextInput'
-import { Product } from 'core/domain/entities'
+import { Category, Product, Tag } from 'core/domain/entities'
 import { useState } from 'react'
+import { useAppDispatch } from 'store/configureStore'
+import { addProductAsync } from 'store/productSlice'
 import Base from 'templates/Base'
 import * as S from './styles'
 
@@ -37,16 +39,21 @@ const listTags: {
 ]
 
 const ProductForm = () => {
+  const dispatch = useAppDispatch()
   const [product, setProduct] = useState(defaultValues)
 
   function handleInput<Type = string>(property: string, value: Type) {
     setProduct({ ...product, [property]: value })
   }
 
+  const handleSubmit = () => {
+    dispatch(addProductAsync({ product: product }))
+  }
+
   return (
     <Base>
       <S.Wrapper>
-        <S.Title>ProductForm</S.Title>
+        <S.Title>Cadastro do Produto</S.Title>
 
         <S.Content>
           <S.Row>
@@ -63,15 +70,6 @@ const ProductForm = () => {
               span="5"
               onInputChange={(v) => handleInput('description', v)}
             />
-          </S.Row>
-
-          <S.Row>
-            <TextInput
-              label="Categoria"
-              property="category"
-              span="8"
-              onInputChange={(v) => handleInput('category', v)}
-            />
 
             <Checkbox
               label="Suspenso"
@@ -81,16 +79,38 @@ const ProductForm = () => {
           </S.Row>
 
           <S.Row>
-            <Select span="4" title="Categoria" options={listCategories} />
+            <Select
+              span="4"
+              title="Categoria"
+              options={listCategories}
+              onSubmit={(selectedList) =>
+                handleInput<Category>('categories', {
+                  id: selectedList[0].value,
+                  name: selectedList[0].label
+                })
+              }
+            />
 
-            <Select span="4" isMultiple title="Tags" options={listTags} />
+            <Select
+              span="5"
+              isMultiple
+              title="Tags"
+              options={listTags}
+              onSubmit={(selectedList) =>
+                handleInput<Tag[]>(
+                  'tag',
+                  selectedList.map((item) => ({
+                    id: item.value,
+                    name: item.label
+                  }))
+                )
+              }
+            />
           </S.Row>
         </S.Content>
 
         <S.Footer>
-          <Button onClick={() => console.log('values', product)}>
-            Confirmar
-          </Button>
+          <Button onClick={() => handleSubmit()}>Confirmar</Button>
         </S.Footer>
       </S.Wrapper>
     </Base>
