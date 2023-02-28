@@ -126,3 +126,15 @@ export const SelectedItem = styled.div`
     padding: 0.5rem;
   `}
 `
+
+export const SearchWrapper = styled.div`
+  ${({ theme }) => css`
+    display: flex;
+
+    margin-bottom: ${theme.spacings.xsmall};
+  `}
+`
+
+export const SearchInput = styled.input`
+  ${({ theme }) => css``}
+`

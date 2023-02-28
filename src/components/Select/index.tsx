@@ -3,6 +3,7 @@ import * as S from './styles'
 import { Check } from '@styled-icons/boxicons-regular/Check'
 import { Close } from '@styled-icons/material/Close'
 import Button from 'components/Button'
+import TextInput from 'components/TextInput'
 
 type ListItem = {
   label: string
@@ -30,23 +31,28 @@ const Select = <T extends ListItem>({
   const [isOpen, setIsOpen] = useState(opened)
   const [listSelect, setlistSelect] = useState(options)
   const [selectedItems, setSelectedItems] = useState<T[]>([])
+  const [search, setSearch] = useState('')
 
   const handleSetIsOpen = () => {
     setIsOpen(!isOpen)
   }
 
-  const handleSelect = (index: number) => {
-    const item = listSelect[index]
+  const handleSelect = (selectedItem: T) => {
+    const currentItem = listSelect.find(
+      (item) => item.value == selectedItem.value
+    )
 
-    item.selected = !item.selected
+    if (!currentItem) return
+
+    currentItem.selected = !currentItem.selected
 
     setlistSelect(() => [...listSelect])
 
     if (!isMultiple) {
       setIsOpen(false)
-      setSelectedItems([item])
+      setSelectedItems([currentItem])
 
-      onSubmit && onSubmit([item])
+      onSubmit && onSubmit([currentItem])
     }
   }
 
@@ -59,8 +65,13 @@ const Select = <T extends ListItem>({
     onSubmit && onSubmit(currentSelectedItems)
   }
 
-  const handleRemoveItem = (index: number) => {
-    const selectedItem = selectedItems[index]
+  const handleRemoveItem = (selectedItem: T) => {
+    const currentItem = listSelect.find(
+      (item) => item.value == selectedItem.value
+    )
+
+    if (!currentItem) return
+
     const itemToUpdate = listSelect.find(
       (item) => item.value === selectedItem.value
     )
@@ -68,7 +79,7 @@ const Select = <T extends ListItem>({
     if (itemToUpdate) itemToUpdate.selected = false
 
     setSelectedItems([
-      ...selectedItems.filter((item) => item.value !== selectedItem.value)
+      ...selectedItems.filter((item) => item.value !== currentItem.value)
     ])
     setlistSelect([...listSelect])
   }
@@ -96,13 +107,13 @@ const Select = <T extends ListItem>({
           </S.ClearFilterIconWrapper>
         )}
 
-        {selectedItems.map((item, index) => (
+        {selectedItems.map((item) => (
           <S.SelectedItem key={item.value}>
             <span>{item.label}</span>
             <S.UnSelectIconWrapper
               onClick={(e) => {
                 e.stopPropagation()
-                handleRemoveItem(index)
+                handleRemoveItem(item)
               }}
             >
               <Close />
@@ -111,25 +122,39 @@ const Select = <T extends ListItem>({
         ))}
 
         <S.Content isOpen={isOpen}>
+          <S.SearchWrapper onClick={(e) => e.stopPropagation()}>
+            <TextInput
+              label="Descrição"
+              property="description"
+              onInputChange={(value) => setSearch(value)}
+            />
+          </S.SearchWrapper>
+
           <ul>
-            {listSelect.map((item, index) => (
-              <S.ListItem
-                key={item.value}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handleSelect(index)
-                }}
-              >
-                {item.label}
-                {item.selected ? (
-                  <S.IconWrapper>
-                    <Check />
-                  </S.IconWrapper>
-                ) : (
-                  ''
-                )}
-              </S.ListItem>
-            ))}
+            {listSelect
+              .filter(
+                (item) =>
+                  !search ||
+                  item.label.toLowerCase().includes(search.toLowerCase())
+              )
+              .map((item) => (
+                <S.ListItem
+                  key={item.value}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleSelect(item)
+                  }}
+                >
+                  {item.label}
+                  {item.selected ? (
+                    <S.IconWrapper>
+                      <Check />
+                    </S.IconWrapper>
+                  ) : (
+                    ''
+                  )}
+                </S.ListItem>
+              ))}
           </ul>
 
           {isMultiple && (
