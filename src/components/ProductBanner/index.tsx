@@ -23,7 +23,12 @@ const ProductBanner = ({ product }: ProductBannerProps) => {
   return (
     <S.Wrapper>
       <S.ImageWrapper>
-        <img src={product.pictureUrl!} alt={product.name} />
+        <S.FigureImage src={product.pictureUrl!} alt={product.name} />
+        <S.FigureCaption>
+          <S.ButtonPopup onClick={() => console.log('popup')}>
+            {product.name}
+          </S.ButtonPopup>
+        </S.FigureCaption>
       </S.ImageWrapper>
       <S.Content>
         <h1>{product.name}</h1>
