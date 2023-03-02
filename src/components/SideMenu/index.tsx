@@ -29,7 +29,9 @@ const SideMenu = () => {
                 </Link>
               </S.ListItem>
               <S.ListItem>
-                <S.LinkItem href="#">Link 1</S.LinkItem>
+                <Link href="/category" passHref>
+                  <S.LinkItem href="#">Categoria</S.LinkItem>
+                </Link>
               </S.ListItem>
               <S.ListItem>
                 <S.LinkItem href="#">Link 1</S.LinkItem>
