@@ -6,6 +6,7 @@ type TextInputProps = {
   label: string
   span?: string | undefined
   onInputChange: (value: string) => void
+  error?: string
 } & InputHTMLAttributes<HTMLInputElement>
 
 const TextInput = ({
@@ -13,6 +14,7 @@ const TextInput = ({
   label,
   span = '3',
   onInputChange,
+  error,
   ...props
 }: TextInputProps) => {
   const [value, setValue] = useState('')
@@ -26,12 +28,13 @@ const TextInput = ({
   }
 
   return (
-    <S.Wrapper span={span}>
+    <S.Wrapper hasError={!!error} span={span}>
       <S.Input
         type="text"
         name={property}
         onChange={onChange}
         value={value}
+        hasContent={!!value}
         {...props}
       />
       {label && <S.Label htmlFor={property}>{label}</S.Label>}

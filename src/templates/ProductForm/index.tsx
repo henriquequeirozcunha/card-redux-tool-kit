@@ -8,6 +8,8 @@ import { useAppDispatch } from 'store/configureStore'
 import { addProductAsync } from 'store/productSlice'
 import Base from 'templates/Base'
 import * as S from './styles'
+import * as yup from 'yup'
+import { FieldError, parseYupValidation } from 'validations'
 
 const defaultValues: Product = {
   id: '',
@@ -16,15 +18,11 @@ const defaultValues: Product = {
   suspended: false
 }
 
-const listCategories: {
-  label: string
-  value: string
-  is_principal?: boolean
-}[] = [
-  { label: 'Eletrônicos', value: '1', is_principal: true },
-  { label: 'Limpeza', value: '2' },
-  { label: 'Construção', value: '3' },
-  { label: 'Outros', value: '4' }
+const listCategories: Category[] = [
+  { name: 'Eletrônicos', id: '1', is_principal: true },
+  { name: 'Limpeza', id: '2' },
+  { name: 'Construção', id: '3' },
+  { name: 'Outros', id: '4' }
 ]
 
 const listTags: {
@@ -38,16 +36,46 @@ const listTags: {
   { label: 'Outros', value: '4' }
 ]
 
+const schema = yup.object({
+  id: yup.string().optional(),
+  name: yup.string().required(),
+  price: yup.number().min(0).required(),
+  pictureUrl: yup.string().optional(),
+  wishList: yup.boolean().optional(),
+  description: yup.string().required(),
+  categoryId: yup.string().required(),
+  suspended: yup.boolean().default(false),
+  tags: yup
+    .array()
+    .of(
+      yup.object({
+        id: yup.string().required(),
+        name: yup.string().required()
+      })
+    )
+    .min(1)
+})
+
 const ProductForm = () => {
   const dispatch = useAppDispatch()
   const [product, setProduct] = useState(defaultValues)
+  const [errors, setErrors] = useState<FieldError>({})
 
   function handleInput<Type = string>(property: string, value: Type) {
     setProduct({ ...product, [property]: value })
   }
 
-  const handleSubmit = () => {
-    dispatch(addProductAsync({ product: product }))
+  const handleSubmit = async () => {
+    try {
+      await schema.validate(product, { abortEarly: false })
+
+      dispatch(addProductAsync({ product: product }))
+    } catch (error: any) {
+      const errorParssed = error as yup.ValidationError
+      const parsedErrors = parseYupValidation(errorParssed)
+
+      setErrors(parsedErrors)
+    }
   }
 
   return (
@@ -61,6 +89,7 @@ const ProductForm = () => {
               label="Nome"
               property="name"
               span="3"
+              error={errors?.name}
               onInputChange={(v) => handleInput('name', v)}
             />
 
@@ -68,6 +97,7 @@ const ProductForm = () => {
               label="Descrição"
               property="description"
               span="5"
+              error={errors?.description}
               onInputChange={(v) => handleInput('description', v)}
             />
 
@@ -82,7 +112,11 @@ const ProductForm = () => {
             <Select
               span="4"
               title="Categoria"
-              options={listCategories}
+              options={listCategories.map((item) => ({
+                label: item.name,
+                value: item.id,
+                is_principal: item.is_principal
+              }))}
               onSubmit={(selectedList) =>
                 handleInput<Category>('categories', {
                   id: selectedList[0].value,

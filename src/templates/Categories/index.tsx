@@ -2,25 +2,20 @@ import { useEffect, useState } from 'react'
 import Base from 'templates/Base'
 import * as S from './styles'
 import { orderBy } from 'lodash'
-
-type Category = {
-  label: string
-  value: number
-  is_principal?: boolean
-}
+import { Category } from 'core/domain/entities'
 
 const listCategories: Category[] = [
-  { label: 'Eletrônicos', value: 1, is_principal: true },
-  { label: 'Limpeza', value: 2 },
-  { label: 'Construção', value: 3 },
-  { label: 'Outros', value: 4 },
-  { label: 'Outros 1', value: 5 },
-  { label: 'Outros 2', value: 6 },
-  { label: 'Outros 3', value: 7 },
-  { label: 'Outros 4', value: 8 },
-  { label: 'Outros 5', value: 9 },
-  { label: 'Outros 6', value: 10 },
-  { label: 'Outros 7', value: 11 }
+  { name: 'Eletrônicos', id: '1', is_principal: true },
+  { name: 'Limpeza', id: '2' },
+  { name: 'Construção', id: '3' },
+  { name: 'Outros', id: '4' },
+  { name: 'Outros 1', id: '5' },
+  { name: 'Outros 2', id: '6' },
+  { name: 'Outros 3', id: '7' },
+  { name: 'Outros 4', id: '8' },
+  { name: 'Outros 5', id: '9' },
+  { name: 'Outros 6', id: '10' },
+  { name: 'Outros 7', id: '11' }
 ]
 
 type Sort = {
@@ -79,10 +74,10 @@ const Categories = () => {
           <S.Table>
             <S.THead>
               <S.Tr>
-                <S.Th sortable onClick={() => handleOrderBy('value')}>
+                <S.Th sortable onClick={() => handleOrderBy('id')}>
                   #Id
                 </S.Th>
-                <S.Th sortable onClick={() => handleOrderBy('label')}>
+                <S.Th sortable onClick={() => handleOrderBy('name')}>
                   Nome
                 </S.Th>
                 <S.Th sortable onClick={() => handleOrderBy('is_principal')}>
@@ -95,12 +90,12 @@ const Categories = () => {
             <S.TBody borderStyle="stripped">
               {list.map((item, index) => (
                 <S.Tr
-                  key={item.value}
+                  key={item.id}
                   onClick={() => setSelectedIndex(index)}
                   active={selectedIndex === index}
                 >
-                  <S.Td>{item.value}</S.Td>
-                  <S.Td>{item.label}</S.Td>
+                  <S.Td>{item.id}</S.Td>
+                  <S.Td>{item.name}</S.Td>
                   <S.Td
                     onClick={(e) => {
                       e.stopPropagation()

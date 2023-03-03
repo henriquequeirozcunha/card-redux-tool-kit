@@ -124,8 +124,8 @@ const Select = <T extends ListItem>({
         <S.Content isOpen={isOpen}>
           <S.SearchWrapper onClick={(e) => e.stopPropagation()}>
             <TextInput
-              label="Descrição"
-              property="description"
+              label="Filtrar resultados..."
+              property="search"
               onInputChange={(value) => setSearch(value)}
             />
           </S.SearchWrapper>
