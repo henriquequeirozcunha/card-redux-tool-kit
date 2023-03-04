@@ -40,14 +40,3 @@ export const Footer = styled.div`
 type RowProps = {
   cols?: number
 }
-
-export const Row = styled.div<RowProps>`
-  ${({ theme, cols = 12 }) => css`
-    flex: 0 0 100%;
-
-    display: grid;
-    grid-template-columns: repeat(${cols}, 1fr);
-
-    column-gap: 1rem;
-  `}
-`

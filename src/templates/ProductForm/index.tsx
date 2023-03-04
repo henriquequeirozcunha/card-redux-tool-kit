@@ -10,6 +10,7 @@ import Base from 'templates/Base'
 import * as S from './styles'
 import * as yup from 'yup'
 import { FieldError, parseYupValidation } from 'validations'
+import { Grid } from 'components/Grid'
 
 const defaultValues: Product = {
   id: '',
@@ -84,7 +85,7 @@ const ProductForm = () => {
         <S.Title>Cadastro do Produto</S.Title>
 
         <S.Content>
-          <S.Row>
+          <Grid>
             <TextInput
               label="Nome"
               property="name"
@@ -106,9 +107,9 @@ const ProductForm = () => {
               labelFor="suspended"
               onCheck={(status) => handleInput<boolean>('suspended', status)}
             />
-          </S.Row>
+          </Grid>
 
-          <S.Row>
+          <Grid>
             <Select
               span="4"
               title="Categoria"
@@ -140,7 +141,7 @@ const ProductForm = () => {
                 )
               }
             />
-          </S.Row>
+          </Grid>
         </S.Content>
 
         <S.Footer>

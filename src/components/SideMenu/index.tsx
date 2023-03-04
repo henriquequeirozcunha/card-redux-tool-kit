@@ -34,7 +34,7 @@ const SideMenu = () => {
                 </Link>
               </S.ListItem>
               <S.ListItem>
-                <S.LinkItem href="#">Link 1</S.LinkItem>
+                <S.LinkItem href="/company">Empresa</S.LinkItem>
               </S.ListItem>
               <S.ListItem>
                 <S.LinkItem href="#">Link 1</S.LinkItem>

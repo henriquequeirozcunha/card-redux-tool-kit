@@ -34,17 +34,21 @@ export const Input = styled.input<{ hasContent?: boolean }>`
     width: 100%;
 
     &:focus ~ ${Label}, &:hover ~ ${Label} {
-      top: -1rem;
+      top: -0.1rem;
       opacity: 1;
       left: 0.5rem;
+      font-size: 1.2rem;
+      background-color: white;
     }
 
     ${hasContent &&
     css`
       & ~ ${Label} {
-        top: -1rem;
+        top: -0.1rem;
         opacity: 1;
         left: 0.5rem;
+        font-size: 1.2rem;
+        background-color: white;
       }
     `}
   `}

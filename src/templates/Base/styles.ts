@@ -21,6 +21,10 @@ export const Content = styled.div`
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
+
+    min-height: 80vh;
+    width: 90%;
+    margin: 0 auto;
   `}
 `
 
