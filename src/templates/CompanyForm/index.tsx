@@ -115,7 +115,11 @@ const CompanyForm = () => {
           </div>
 
           <S.ButtonGroupWrapper>
-            <Button disabled={isSubmitting} type="submit">
+            <Button
+              disabled={isSubmitting}
+              loading={isSubmitting}
+              type="submit"
+            >
               Confirmar
             </Button>
           </S.ButtonGroupWrapper>
