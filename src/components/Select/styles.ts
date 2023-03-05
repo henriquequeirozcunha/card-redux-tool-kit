@@ -5,6 +5,9 @@ type WrapperProps = { span: string }
 
 export const Wrapper = styled.main<WrapperProps>`
   ${({ theme, span }) => css`
+    border: 2px solid ${theme.colors.lightGray};
+
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -18,8 +21,24 @@ export const Wrapper = styled.main<WrapperProps>`
   `}
 `
 
-export const Title = styled.div`
-  ${({ theme }) => css``}
+type TitleProps = {
+  title_position?: 'top' | 'float'
+}
+
+export const Title = styled.label<TitleProps>`
+  ${({ theme }) => css`
+    position: absolute;
+    pointer-events: none;
+
+    opacity: 0.5;
+    background-color: transparent;
+    left: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease-in;
+
+    font-size: ${theme.font.sizes.xsmall};
+  `}
 `
 
 const contentModifiers = {
@@ -41,7 +60,7 @@ const contentModifiers = {
 
 export const Content = styled.div<{ isOpen: boolean }>`
   ${({ theme, isOpen }) => css`
-    width: 100%;
+    width: max-content;
     position: absolute;
     background-color: ${theme.colors.white};
 
@@ -73,8 +92,11 @@ export const ListItem = styled.li`
 export const IconWrapper = styled.div`
   ${({ theme }) => css`
     color: ${theme.colors.secondary};
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
+
+    display: flex;
+    align-items: center;
   `}
 `
 
@@ -92,6 +114,9 @@ export const ClearFilterIconWrapper = styled(IconWrapper)`
     right: 0.5rem;
     top: 50%;
     transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
   `}
 `
 
@@ -105,25 +130,49 @@ export const ButtonGroup = styled.div`
     display: flex;
   `}
 `
-export const InputWrapper = styled.div`
-  ${({ theme }) => css`
+type InputProps = {
+  hasContent?: boolean
+}
+
+export const InputWrapper = styled.div<InputProps>`
+  ${({ theme, hasContent }) => css`
+    height: 100%;
     cursor: pointer;
     display: flex;
     flex-wrap: wrap;
     position: relative;
 
-    min-height: 5rem;
-    padding: 1rem;
-    padding-left: 3rem;
+    min-height: 3rem;
     background-color: white;
+
+    &:active > ${Title}, &:focus > ${Title}, &:hover > ${Title} {
+      top: -0.1rem;
+      opacity: 1;
+      left: 0.5rem;
+      font-size: 1.2rem;
+      background-color: white;
+    }
+
+    ${hasContent &&
+    css`
+      & > ${Title} {
+        top: -0.1rem;
+        opacity: 1;
+        left: 0.5rem;
+        font-size: 1.2rem;
+        background-color: white;
+      }
+    `}
   `}
 `
 export const SelectedItem = styled.div`
   ${({ theme }) => css`
     display: flex;
+    align-items: center;
     gap: 1rem;
 
-    padding: 0.5rem;
+    padding-left: 0.5rem;
+    font-size: ${theme.font.sizes.xsmall};
   `}
 `
 

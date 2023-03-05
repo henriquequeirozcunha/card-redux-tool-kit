@@ -28,6 +28,7 @@ const shakeAniamtion = keyframes`
 
 export const Wrapper = styled.div<WrapperProps>`
   ${({ theme, span }) => css`
+    border: 2px solid ${theme.colors.lightGray};
     width: 100%;
 
     ${span && span === 'full' && wrapperModifiers.fullWidth()}
@@ -44,6 +45,7 @@ export const InputWrapper = styled.div<InputWrapperProps>`
     position: relative;
 
     width: 100%;
+    min-height: 3rem;
 
     ${hasError && wrapperModifiers.withError(theme)}
   `}
@@ -55,7 +57,10 @@ type InputProps = {
 
 export const Input = styled.input<InputProps>`
   ${({ theme, hasContent }) => css`
-    padding: ${theme.spacings.xxsmall};
+    border: none;
+
+    min-height: 3rem;
+    padding: 0.5rem;
     width: 100%;
 
     &:active ~ ${Label}, &:focus ~ ${Label}, &:hover ~ ${Label} {
@@ -90,6 +95,8 @@ export const Label = styled.label`
     top: 50%;
     transform: translateY(-50%);
     transition: all 0.3s ease-in;
+
+    font-size: ${theme.font.sizes.xsmall};
   `}
 `
 export const ErrorWrapper = styled.div`

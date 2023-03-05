@@ -9,6 +9,7 @@ import { pt } from 'yup-locale-pt'
 
 import * as S from './styles'
 import * as yup from 'yup'
+import Select from 'components/Select'
 
 yup.setLocale(pt)
 
@@ -25,6 +26,29 @@ const schema = yup
     address_complement: yup.string().required('Complemento é obrigatório')
   })
   .required()
+
+const listStates = [
+  {
+    label: 'Pernambuco',
+    value: 'PE'
+  },
+  {
+    label: 'Paraíba',
+    value: 'PB'
+  },
+  {
+    label: 'Rio Grande do Norte',
+    value: 'RN'
+  },
+  {
+    label: 'Rio de Janeiro',
+    value: 'RJ'
+  },
+  {
+    label: 'São Paulo',
+    value: 'SP'
+  }
+]
 
 const CompanyForm = () => {
   const {
@@ -91,11 +115,16 @@ const CompanyForm = () => {
                 {...register('address_number')}
               />
 
-              <TextInput
-                label="Estado"
+              <Select
                 span="3"
-                error={errors?.address_state?.message as string}
+                title="Estado"
+                title_position="float"
+                // error={errors?.address_state?.message as string}
                 {...register('address_state')}
+                options={listStates.map(({ label, value }) => ({
+                  label,
+                  value
+                }))}
               />
 
               <TextInput

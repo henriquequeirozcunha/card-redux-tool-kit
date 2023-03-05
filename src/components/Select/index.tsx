@@ -5,7 +5,7 @@ import { Close } from '@styled-icons/material/Close'
 import Button from 'components/Button'
 import TextInput from 'components/TextInput'
 
-type ListItem = {
+export type ListItem = {
   label: string
   value: string
   selected?: boolean
@@ -18,6 +18,7 @@ export type SelectProps<T extends ListItem> = {
   options: T[]
   isMultiple?: boolean
   onSubmit?: (selectedList: T[]) => void
+  title_position?: 'top' | 'float'
 }
 
 const Select = <T extends ListItem>({
@@ -26,7 +27,8 @@ const Select = <T extends ListItem>({
   span = 'all',
   options,
   isMultiple = false,
-  onSubmit
+  onSubmit,
+  title_position = 'top'
 }: SelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(opened)
   const [listSelect, setlistSelect] = useState(options)
@@ -93,9 +95,14 @@ const Select = <T extends ListItem>({
 
   return (
     <S.Wrapper span={span}>
-      <S.Title>{title}</S.Title>
+      {title_position === 'top' && <S.Title>{title}</S.Title>}
 
-      <S.InputWrapper onClick={() => handleSetIsOpen()}>
+      <S.InputWrapper
+        hasContent={!!selectedItems.length}
+        onClick={() => handleSetIsOpen()}
+      >
+        {title_position === 'float' && <S.Title>{title}</S.Title>}
+
         {isMultiple && (
           <S.ClearFilterIconWrapper
             onClick={(e) => {

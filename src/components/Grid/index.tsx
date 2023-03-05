@@ -13,5 +13,7 @@ export const Grid = styled.div<RowProps>`
 
     column-gap: 1rem;
     row-gap: 1.5rem;
+
+    align-items: start;
   `}
 `
