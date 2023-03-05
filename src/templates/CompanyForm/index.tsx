@@ -16,16 +16,13 @@ const schema = yup
   .object({
     company_name: yup.string().required('Razão Social é obrigatório'),
     trading_name: yup.string().required('Nome fantasia é obrigatório'),
-    cnpj: yup.string().required().required('CNPJ123 é obrigatório'),
-    cep: yup.string().required().required('CEP é obrigatório'),
-    address_name: yup.string().required().required('Endereço é obrigatório'),
-    address_number: yup.string().required().required('Número é obrigatório'),
-    address_state: yup.string().required().required('Estado é obrigatório'),
-    address_district: yup.string().required().required('Cidade é obrigatório'),
-    address_complement: yup
-      .string()
-      .required()
-      .required('Complemento é obrigatório')
+    cnpj: yup.string().required('CNPJ é obrigatório'),
+    cep: yup.string().required('CEP é obrigatório'),
+    address_name: yup.string().required('Endereço é obrigatório'),
+    address_number: yup.string().required('Número é obrigatório'),
+    address_state: yup.string().required('Estado é obrigatório'),
+    address_district: yup.string().required('Cidade é obrigatório'),
+    address_complement: yup.string().required('Complemento é obrigatório')
   })
   .required()
 
