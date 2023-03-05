@@ -14,7 +14,7 @@ export class GetProduct {
       id,
       name: 'Custom Generated Product',
       price: 500,
-      pictureUrl: '/img/hero-illustration.svg',
+      picture_url: '/img/hero-illustration.svg',
       description: defaultDescription
     }
 

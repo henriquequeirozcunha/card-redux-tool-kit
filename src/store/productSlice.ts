@@ -16,7 +16,7 @@ export const createNewEmptyProduct = (): Product => {
     id: '',
     name: 'New Product',
     price: 0,
-    pictureUrl: '/img/hero-illustration.svg'
+    picture_url: '/img/hero-illustration.svg'
   }
 
   return productToAdd

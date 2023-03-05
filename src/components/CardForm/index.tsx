@@ -31,7 +31,7 @@ const CardForm = () => {
 
     const data: CreateBasketPaymentIntent.Command = {
       products: productsWithlist,
-      totalPrice: productsWithlist?.reduce(
+      total_price: productsWithlist?.reduce(
         (acc, item) => (acc += item.price),
         0
       )
@@ -60,7 +60,7 @@ const CardForm = () => {
       <S.Title>My Container</S.Title>
       <TextInput
         label="Nome do Produto"
-        property="name"
+        name="name"
         onInputChange={(v) => handleInput('name', v)}
       />
       <Button onClick={() => handleAddProduct()}>Adicionar</Button>

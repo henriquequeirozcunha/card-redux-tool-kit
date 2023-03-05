@@ -17,11 +17,11 @@ export const createBasketPaymentIntentAsync = createAsyncThunk<
   CreateBasketPaymentIntent.Command
 >(
   'basket/createBasketPaymentIntentAsync',
-  async ({ products, totalPrice }, thunkAPI) => {
+  async ({ products, total_price }, thunkAPI) => {
     try {
       return await new CreateBasketPaymentIntent().handle({
         products,
-        totalPrice
+        total_price
       })
     } catch (error: any) {
       console.log('error', error)
@@ -85,7 +85,7 @@ export const basketSlice = createSlice({
         const basketAdded: Basket = {
           id: action.payload!.id,
           products: action.meta.arg.products,
-          totalPrice: action.meta.arg.totalPrice
+          total_price: action.meta.arg.total_price
         }
         console.log('basketAdded', basketAdded)
         basketAdapter.addOne(state, basketAdded)

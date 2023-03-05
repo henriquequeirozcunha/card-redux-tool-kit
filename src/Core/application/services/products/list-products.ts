@@ -8,35 +8,35 @@ export const mockProducts: Product[] = [
     id: generateUniqueId(),
     name: 'New Product 1',
     price: 100,
-    pictureUrl: '/img/logo.svg',
+    picture_url: '/img/logo.svg',
     description: defaultDescription
   },
   {
     id: generateUniqueId(),
     name: 'New Product 2',
     price: 200,
-    pictureUrl: '/img/hero-illustration.svg',
+    picture_url: '/img/hero-illustration.svg',
     description: defaultDescription
   },
   {
     id: generateUniqueId(),
     name: 'New Product 3',
     price: 300,
-    pictureUrl: '/img/logo.svg',
+    picture_url: '/img/logo.svg',
     description: defaultDescription
   },
   {
     id: generateUniqueId(),
     name: 'New Product 4',
     price: 400,
-    pictureUrl: '/img/hero-illustration.svg',
+    picture_url: '/img/hero-illustration.svg',
     description: defaultDescription
   },
   {
     id: generateUniqueId(),
     name: 'New Product 5',
     price: 500,
-    pictureUrl: '/img/hero-illustration.svg',
+    picture_url: '/img/hero-illustration.svg',
     description: defaultDescription
   }
 ]

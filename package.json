@@ -23,6 +23,7 @@
     ]
   },
   "dependencies": {
+    "@hookform/resolvers": "^2.9.11",
     "@reduxjs/toolkit": "^1.9.1",
     "@styled-icons/boxicons-regular": "^10.38.0",
     "@styled-icons/boxicons-solid": "^10.38.0",
@@ -37,7 +38,8 @@
     "styled-components": "^5.2.1",
     "styled-icons": "^10.38.0",
     "uuid": "^9.0.0",
-    "yup": "^1.0.2"
+    "yup": "^1.0.2",
+    "yup-locale-pt": "0.0.9"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",

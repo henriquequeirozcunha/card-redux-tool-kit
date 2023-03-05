@@ -13,7 +13,7 @@ export type CardProps = {
   onRemoveItem: (id: string) => void
 }
 
-const defaultPictureUrl = '/img/hero-illustration.svg'
+const defaultpicture_url = '/img/hero-illustration.svg'
 
 const Card = ({ product, onRemoveItem }: CardProps) => {
   const dispatch = useAppDispatch()
@@ -42,7 +42,7 @@ const Card = ({ product, onRemoveItem }: CardProps) => {
           <S.Content>
             <S.ImageWrapper>
               <Image
-                src={product.pictureUrl || defaultPictureUrl}
+                src={product.picture_url || defaultpicture_url}
                 alt={product.name}
                 height={100}
                 width={100}

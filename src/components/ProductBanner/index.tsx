@@ -33,7 +33,7 @@ const ProductBanner = ({ product }: ProductBannerProps) => {
       )}
       <S.Wrapper>
         <S.ImageWrapper>
-          <S.FigureImage src={product.pictureUrl!} alt={product.name} />
+          <S.FigureImage src={product.picture_url!} alt={product.name} />
           <S.FigureCaption>
             <S.ButtonPopup onClick={() => setIsPopupOpen(!isPopupOpen)}>
               {product.name}

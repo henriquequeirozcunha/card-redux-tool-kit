@@ -41,10 +41,10 @@ const schema = yup.object({
   id: yup.string().optional(),
   name: yup.string().required(),
   price: yup.number().min(0).required(),
-  pictureUrl: yup.string().optional(),
+  picture_url: yup.string().optional(),
   wishList: yup.boolean().optional(),
   description: yup.string().required(),
-  categoryId: yup.string().required(),
+  category_id: yup.string().required(),
   suspended: yup.boolean().default(false),
   tags: yup
     .array()
@@ -88,7 +88,7 @@ const ProductForm = () => {
           <Grid>
             <TextInput
               label="Nome"
-              property="name"
+              name="name"
               span="3"
               error={errors?.name}
               onInputChange={(v) => handleInput('name', v)}
@@ -96,7 +96,7 @@ const ProductForm = () => {
 
             <TextInput
               label="Descrição"
-              property="description"
+              name="description"
               span="5"
               error={errors?.description}
               onInputChange={(v) => handleInput('description', v)}

@@ -28,7 +28,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
   return (
     <S.Wrapper>
       <S.ImageWrapper>
-        <Image src={product.pictureUrl!} alt={product.name} layout="fill" />
+        <Image src={product.picture_url!} alt={product.name} layout="fill" />
       </S.ImageWrapper>
       <S.Content>
         <S.Title>{product.name}</S.Title>
