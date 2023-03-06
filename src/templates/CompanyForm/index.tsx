@@ -54,6 +54,7 @@ const CompanyForm = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting, isValid }
   } = useForm({
     resolver: yupResolver(schema, { abortEarly: false })
@@ -73,6 +74,9 @@ const CompanyForm = () => {
         <S.Title>Cadastro de Empresa</S.Title>
 
         <S.Form onSubmit={handleSubmit(handleSubmitForm)}>
+          <div>
+            <input type="button" onClick={() => console.log(errors)} />
+          </div>
           <div>
             <Grid>
               <TextInput
@@ -96,6 +100,7 @@ const CompanyForm = () => {
 
               <TextInput
                 label="CEP"
+                mask="99999-999"
                 span="3"
                 error={errors?.cep?.message as string}
                 {...register('cep')}
@@ -119,12 +124,15 @@ const CompanyForm = () => {
                 span="3"
                 title="Estado"
                 title_position="float"
-                // error={errors?.address_state?.message as string}
+                error={errors?.address_state?.message as string}
                 {...register('address_state')}
                 options={listStates.map(({ label, value }) => ({
                   label,
                   value
                 }))}
+                onInputChange={(itemsSelected) => {
+                  setValue('address_state', itemsSelected[0].value)
+                }}
               />
 
               <TextInput

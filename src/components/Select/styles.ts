@@ -5,12 +5,9 @@ type WrapperProps = { span: string }
 
 export const Wrapper = styled.main<WrapperProps>`
   ${({ theme, span }) => css`
-    border: 2px solid ${theme.colors.lightGray};
-
-    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    /* gap: 1rem; */
 
     position: relative;
 
@@ -136,6 +133,8 @@ type InputProps = {
 
 export const InputWrapper = styled.div<InputProps>`
   ${({ theme, hasContent }) => css`
+    border: 2px solid ${theme.colors.lightGray};
+
     height: 100%;
     cursor: pointer;
     display: flex;
@@ -171,7 +170,7 @@ export const SelectedItem = styled.div`
     align-items: center;
     gap: 1rem;
 
-    padding-left: 0.5rem;
+    padding: 0.5rem;
     font-size: ${theme.font.sizes.xsmall};
   `}
 `

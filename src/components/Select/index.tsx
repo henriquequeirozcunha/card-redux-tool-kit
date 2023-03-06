@@ -4,6 +4,7 @@ import { Check } from '@styled-icons/boxicons-regular/Check'
 import { Close } from '@styled-icons/material/Close'
 import Button from 'components/Button'
 import TextInput from 'components/TextInput'
+import { ErrorWrapper } from 'components/ErrorWrapper'
 
 export type ListItem = {
   label: string
@@ -17,9 +18,10 @@ export type SelectProps<T extends ListItem> = {
   span?: string | undefined
   options: T[]
   isMultiple?: boolean
-  onSubmit?: (selectedList: T[]) => void
+  onInputChange?: (selectedList: T[]) => void
   title_position?: 'top' | 'float'
-}
+  error?: string
+} & React.SelectHTMLAttributes<HTMLElement>
 
 const Select = <T extends ListItem>({
   title,
@@ -27,8 +29,9 @@ const Select = <T extends ListItem>({
   span = 'all',
   options,
   isMultiple = false,
-  onSubmit,
-  title_position = 'top'
+  onInputChange,
+  title_position = 'top',
+  error
 }: SelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(opened)
   const [listSelect, setlistSelect] = useState(options)
@@ -54,7 +57,7 @@ const Select = <T extends ListItem>({
       setIsOpen(false)
       setSelectedItems([currentItem])
 
-      onSubmit && onSubmit([currentItem])
+      onInputChange && onInputChange([currentItem])
     }
   }
 
@@ -64,7 +67,7 @@ const Select = <T extends ListItem>({
     setSelectedItems([...currentSelectedItems])
     setIsOpen(false)
 
-    onSubmit && onSubmit(currentSelectedItems)
+    onInputChange && onInputChange(currentSelectedItems)
   }
 
   const handleRemoveItem = (selectedItem: T) => {
@@ -171,6 +174,7 @@ const Select = <T extends ListItem>({
           )}
         </S.Content>
       </S.InputWrapper>
+      <ErrorWrapper>{error && <span>{error}</span>}</ErrorWrapper>
     </S.Wrapper>
   )
 }

@@ -118,7 +118,7 @@ const ProductForm = () => {
                 value: item.id,
                 is_principal: item.is_principal
               }))}
-              onSubmit={(selectedList) =>
+              onInputChange={(selectedList) =>
                 handleInput<Category>('categories', {
                   id: selectedList[0].value,
                   name: selectedList[0].label
@@ -131,7 +131,7 @@ const ProductForm = () => {
               isMultiple
               title="Tags"
               options={listTags}
-              onSubmit={(selectedList) =>
+              onInputChange={(selectedList) =>
                 handleInput<Tag[]>(
                   'tag',
                   selectedList.map((item) => ({

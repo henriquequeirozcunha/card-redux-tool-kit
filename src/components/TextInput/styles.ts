@@ -28,7 +28,6 @@ const shakeAniamtion = keyframes`
 
 export const Wrapper = styled.div<WrapperProps>`
   ${({ theme, span }) => css`
-    border: 2px solid ${theme.colors.lightGray};
     width: 100%;
 
     ${span && span === 'full' && wrapperModifiers.fullWidth()}
@@ -57,7 +56,7 @@ type InputProps = {
 
 export const Input = styled.input<InputProps>`
   ${({ theme, hasContent }) => css`
-    border: none;
+    border: 2px solid ${theme.colors.lightGray};
 
     min-height: 3rem;
     padding: 0.5rem;
@@ -97,14 +96,5 @@ export const Label = styled.label`
     transition: all 0.3s ease-in;
 
     font-size: ${theme.font.sizes.xsmall};
-  `}
-`
-export const ErrorWrapper = styled.div`
-  ${({ theme }) => css`
-    color: red;
-
-    span {
-      font-size: 1.2rem;
-    }
   `}
 `
