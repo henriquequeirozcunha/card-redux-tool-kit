@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import * as S from './styles'
 import { Check } from '@styled-icons/boxicons-regular/Check'
 import { Close } from '@styled-icons/material/Close'
@@ -21,6 +21,7 @@ export type SelectProps<T extends ListItem> = {
   onInputChange?: (selectedList: T[]) => void
   title_position?: 'top' | 'float'
   error?: string
+  initialValue?: string[]
 } & React.SelectHTMLAttributes<HTMLElement>
 
 const Select = <T extends ListItem>({
@@ -31,12 +32,36 @@ const Select = <T extends ListItem>({
   isMultiple = false,
   onInputChange,
   title_position = 'top',
-  error
+  error,
+  initialValue
 }: SelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(opened)
   const [listSelect, setlistSelect] = useState(options)
   const [selectedItems, setSelectedItems] = useState<T[]>([])
   const [search, setSearch] = useState('')
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const items = listSelect.filter((item) =>
+      initialValue?.includes(item.value)
+    )
+
+    if (items.length) {
+      setSelectedItems([...items])
+    }
+  }, [initialValue, listSelect])
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('click', handleClickOutside, true)
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true)
+    }
+  }, [])
 
   const handleSetIsOpen = () => {
     setIsOpen(!isOpen)
@@ -97,7 +122,7 @@ const Select = <T extends ListItem>({
   }
 
   return (
-    <S.Wrapper span={span}>
+    <S.Wrapper span={span} ref={ref}>
       {title_position === 'top' && <S.Title>{title}</S.Title>}
 
       <S.InputWrapper

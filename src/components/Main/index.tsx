@@ -1,5 +1,4 @@
 import Card from 'components/Card'
-import CardForm from 'components/CardForm'
 import ProductFilters from 'components/ProductFilters'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'store/configureStore'
@@ -63,10 +62,6 @@ const Main = ({
               ))}
             </S.CardListWrapper>
           </S.Container>
-
-          <S.CardFormWrapper>
-            <CardForm />
-          </S.CardFormWrapper>
         </S.MainContent>
       </S.Wrapper>
     </Base>

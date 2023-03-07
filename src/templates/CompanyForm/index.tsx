@@ -56,7 +56,6 @@ const CompanyForm = () => {
     register,
     handleSubmit,
     setValue,
-    getValues,
     setError,
     clearErrors,
     control,
@@ -71,7 +70,7 @@ const CompanyForm = () => {
       cep: '',
       address_name: '',
       address_number: '',
-      address_state: '',
+      address_state: 'PE',
       address_district: '',
       address_complement: ''
     }
@@ -108,7 +107,7 @@ const CompanyForm = () => {
   }
 
   const validateCNPJ = (value: string) => {
-    const regex = new RegExp(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/)
+    const regex = new RegExp(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/)
     const valido = regex.test(value)
 
     valido
@@ -185,19 +184,26 @@ const CompanyForm = () => {
                 )}
               />
 
-              <Select
-                span="3"
-                title="Estado"
-                title_position="float"
-                error={errors?.address_state?.message as string}
-                {...register('address_state')}
-                options={listStates.map(({ label, value }) => ({
-                  label,
-                  value
-                }))}
-                onInputChange={(itemsSelected) => {
-                  setValue('address_state', itemsSelected[0].value)
-                }}
+              <Controller
+                name="address_state"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    span="3"
+                    title="Estado"
+                    title_position="float"
+                    error={errors?.address_state?.message as string}
+                    options={listStates.map(({ label, value }) => ({
+                      label,
+                      value
+                    }))}
+                    initialValue={[field.value]}
+                    onInputChange={(itemsSelected) => {
+                      field.onChange(itemsSelected[0].value)
+                    }}
+                  />
+                )}
               />
 
               <Controller

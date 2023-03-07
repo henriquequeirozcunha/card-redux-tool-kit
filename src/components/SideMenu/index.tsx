@@ -1,19 +1,32 @@
 import { PlusCircle } from '@styled-icons/heroicons-solid/PlusCircle'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import * as S from './styles'
 
 const SideMenu = () => {
   const [IsOpen, setIsOpen] = useState(false)
+  const ref = useRef(null)
 
-  const handleClickOutside = () => {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('click', handleClickOutside, true)
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true)
+    }
+  }, [])
+
+  const handleSetIsOpen = () => {
     if (IsOpen) {
       setIsOpen(false)
     }
   }
 
   return (
-    <S.Wrapper IsOpen={IsOpen} onClick={() => handleClickOutside()}>
+    <S.Wrapper ref={ref} IsOpen={IsOpen} onClick={() => handleSetIsOpen()}>
       <S.Container IsOpen={IsOpen}>
         <S.FloatButton onClick={() => setIsOpen(!IsOpen)}>
           <PlusCircle fill="white" width="80%" />

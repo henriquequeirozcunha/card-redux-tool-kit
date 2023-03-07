@@ -21,7 +21,7 @@ export const MainContent = styled.div`
   ${({ theme }) => css`
     flex: 1;
     display: grid;
-    grid-template-columns: 20% 1fr 20%;
+    grid-template-columns: 20% 1fr;
   `}
 `
 
@@ -72,17 +72,10 @@ export const Content = styled.div`
   `}
 `
 
-export const CardFormWrapper = styled.div`
-  ${({ theme }) => css`
-    background-color: ${theme.colors.white};
-    padding: ${theme.spacings.xsmall};
-  `}
-`
-
 export const CardListWrapper = styled.div`
   ${({ theme }) => css`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
     grid-gap: ${theme.spacings.medium};
     justify-items: center;
   `}

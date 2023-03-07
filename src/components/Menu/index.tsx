@@ -1,19 +1,40 @@
 import { ShoppingCart } from '@styled-icons/material-outlined/ShoppingCart'
 import UserDropdown from 'components/UserDropdown'
+import { CreateBasketPaymentIntent } from 'core/application/services/basket'
 import { useRouter } from 'next/dist/client/router'
-import { basketSelectors } from 'store/basketSlice'
-import { useAppSelector } from 'store/configureStore'
+import {
+  basketSelectors,
+  createBasketPaymentIntentAsync
+} from 'store/basketSlice'
+import { useAppDispatch, useAppSelector } from 'store/configureStore'
 import { productSelectors } from 'store/productSlice'
 
 import * as S from './styles'
 
 const Menu = () => {
+  const dispatch = useAppDispatch()
   const router = useRouter()
   const products = useAppSelector(productSelectors.selectAll)
   const baskets = useAppSelector(basketSelectors.selectEntities)
   const productsAmount = products?.filter((p) => p.wishList).length
 
   const handleGoToBasketPage = () => {
+    if (!baskets[0]) {
+      const productsWithlist = products?.filter((p) => p.wishList)
+
+      if (!productsWithlist?.length) return
+
+      const data: CreateBasketPaymentIntent.Command = {
+        products: productsWithlist,
+        total_price: productsWithlist?.reduce(
+          (acc, item) => (acc += item.price),
+          0
+        )
+      }
+
+      dispatch(createBasketPaymentIntentAsync(data))
+    }
+
     router.push('/basket')
   }
 
