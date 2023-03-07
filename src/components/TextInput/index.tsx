@@ -1,4 +1,4 @@
-import { ChangeEvent, forwardRef, InputHTMLAttributes, useState } from 'react'
+import { forwardRef, InputHTMLAttributes, useEffect, useState } from 'react'
 import * as S from './styles'
 import InputMask from 'react-input-mask'
 import { ErrorWrapper } from 'components/ErrorWrapper'
@@ -11,6 +11,7 @@ export type TextInputProps = {
   onInputChange?: (value: string) => void
   onInputBlur?: (value: string) => void
   error?: string
+  initialValue?: string
 } & InputHTMLAttributes<HTMLInputElement>
 
 const TextInput: React.ForwardRefRenderFunction<
@@ -27,16 +28,21 @@ const TextInput: React.ForwardRefRenderFunction<
     onInputBlur,
     onChange,
     onBlur,
+    initialValue,
     ...props
   },
   ref
 ) => {
-  const [value, setValue] = useState('')
+  const [currentValue, setCurrentValue] = useState(initialValue)
+
+  useEffect(() => {
+    setCurrentValue(initialValue)
+  }, [initialValue])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value
 
-    setValue(newValue)
+    setCurrentValue(newValue)
 
     onChange && onChange(e)
     onInputChange && onInputChange(newValue)
@@ -44,7 +50,7 @@ const TextInput: React.ForwardRefRenderFunction<
 
   const handleInputBlur = (e: any) => {
     onBlur && onBlur(e)
-    onInputBlur && onInputBlur(value)
+    onInputBlur && onInputBlur(currentValue as string)
   }
 
   return (
@@ -56,10 +62,11 @@ const TextInput: React.ForwardRefRenderFunction<
             mask={mask}
             onChange={handleInputChange}
             onBlur={handleInputBlur}
+            // value={currentValue}
           >
             {() => (
               <S.Input
-                hasContent={!!value}
+                hasContent={!!currentValue}
                 type="text"
                 name={name}
                 {...props}
@@ -68,7 +75,7 @@ const TextInput: React.ForwardRefRenderFunction<
           </InputMask>
         ) : (
           <S.Input
-            hasContent={!!value}
+            hasContent={!!currentValue}
             type="text"
             name={name}
             {...props}

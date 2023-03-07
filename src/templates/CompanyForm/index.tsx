@@ -1,7 +1,7 @@
 import Button from 'components/Button'
 import { Grid } from 'components/Grid'
 import TextInput from 'components/TextInput'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { FieldValues } from 'react-hook-form/dist/types'
 import Base from 'templates/Base'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -10,6 +10,7 @@ import { pt } from 'yup-locale-pt'
 import * as S from './styles'
 import * as yup from 'yup'
 import Select from 'components/Select'
+import { Company } from 'core/domain/entities/company'
 
 yup.setLocale(pt)
 
@@ -55,9 +56,25 @@ const CompanyForm = () => {
     register,
     handleSubmit,
     setValue,
+    getValues,
+    setError,
+    clearErrors,
+    control,
     formState: { errors, isSubmitting, isValid }
-  } = useForm({
-    resolver: yupResolver(schema, { abortEarly: false })
+  } = useForm<Company>({
+    resolver: yupResolver(schema, { abortEarly: false }),
+    criteriaMode: 'all',
+    defaultValues: {
+      company_name: '',
+      trading_name: '',
+      cnpj: '',
+      cep: '',
+      address_name: '',
+      address_number: '',
+      address_state: '',
+      address_district: '',
+      address_complement: ''
+    }
   })
 
   const handleSubmitForm = (data: FieldValues) => {
@@ -68,15 +85,46 @@ const CompanyForm = () => {
     }
   }
 
+  const searchCEP = async (value: string) => {
+    const regex = new RegExp(/^\d{5}-\d{3}$/)
+    const valido = regex.test(value)
+
+    if (!valido) {
+      setError('cep', {
+        type: 'custom',
+        message: 'CEP inválido'
+      })
+      return
+    }
+
+    clearErrors('cep')
+    const response = await fetch(`https://viacep.com.br/ws/${value}/json/`)
+    const data = await response.json()
+
+    setValue('address_name', data.logradouro)
+    setValue('address_state', data.uf)
+    setValue('address_district', data.localidade)
+    setValue('address_complement', data.complemento)
+  }
+
+  const validateCNPJ = (value: string) => {
+    const regex = new RegExp(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/)
+    const valido = regex.test(value)
+
+    valido
+      ? clearErrors('cnpj')
+      : setError('cnpj', {
+          type: 'custom',
+          message: 'CNPJ inválido'
+        })
+  }
+
   return (
     <Base>
       <S.Wrapper>
         <S.Title>Cadastro de Empresa</S.Title>
 
         <S.Form onSubmit={handleSubmit(handleSubmitForm)}>
-          <div>
-            <input type="button" onClick={() => console.log(errors)} />
-          </div>
           <div>
             <Grid>
               <TextInput
@@ -93,8 +141,10 @@ const CompanyForm = () => {
               />
               <TextInput
                 label="CNPJ"
+                mask="99.999.999/9999-99"
                 span="3"
                 error={errors?.cnpj?.message as string}
+                onInputChange={validateCNPJ}
                 {...register('cnpj')}
               />
 
@@ -103,21 +153,36 @@ const CompanyForm = () => {
                 mask="99999-999"
                 span="3"
                 error={errors?.cep?.message as string}
+                onInputChange={searchCEP}
                 {...register('cep')}
               />
 
-              <TextInput
-                label="Endereço"
-                span="6"
-                error={errors?.address_name?.message as string}
-                {...register('address_name')}
+              <Controller
+                name="address_name"
+                control={control}
+                render={({ field }) => (
+                  <TextInput
+                    {...field}
+                    label="Endereço"
+                    span="6"
+                    error={errors?.address_name?.message as string}
+                    initialValue={field.value}
+                  />
+                )}
               />
 
-              <TextInput
-                label="Número"
-                span="3"
-                error={errors?.address_number?.message as string}
-                {...register('address_number')}
+              <Controller
+                name="address_number"
+                control={control}
+                render={({ field }) => (
+                  <TextInput
+                    {...field}
+                    label="Número"
+                    span="3"
+                    error={errors?.address_number?.message as string}
+                    initialValue={field.value}
+                  />
+                )}
               />
 
               <Select
@@ -135,11 +200,18 @@ const CompanyForm = () => {
                 }}
               />
 
-              <TextInput
-                label="Cidade"
-                span="3"
-                error={errors?.address_district?.message as string}
-                {...register('address_district')}
+              <Controller
+                name="address_district"
+                control={control}
+                render={({ field }) => (
+                  <TextInput
+                    {...field}
+                    label="Cidade"
+                    span="3"
+                    error={errors?.address_district?.message as string}
+                    initialValue={field.value}
+                  />
+                )}
               />
 
               <TextInput
