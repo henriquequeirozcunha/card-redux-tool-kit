@@ -20,27 +20,26 @@ export const Button = styled.span`
   ${({ theme }) => css`
     display: inline-block;
 
-    width: 3rem;
-    height: 3rem;
+    width: 2rem;
+    height: 2rem;
 
-    border: 5px solid ${theme.colors.primary};
-    border-radius: 50%;
+    border: 2px solid ${theme.colors.primary};
 
     position: absolute;
 
     &::after {
       content: '';
       display: block;
-
-      width: 1.5rem;
-      height: 1.5rem;
-      border-radius: 50%;
-      background-color: ${theme.colors.primary};
-
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      width: 0.5rem;
+      height: 1rem;
+
+      left: 0.9rem;
+      top: 0.7rem;
+
+      border: solid ${theme.colors.primary};
+      border-width: 0 0.3rem 0.3rem 0;
+      transform: translate(-50%, -50%) rotate(45deg);
       opacity: 0;
       transition: opacity 0.2s;
     }
