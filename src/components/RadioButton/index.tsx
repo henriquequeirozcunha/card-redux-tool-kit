@@ -30,7 +30,7 @@ const RadioButton = ({
       <S.Input
         type="radio"
         id={labelFor}
-        checked={checked}
+        checked={!!checked}
         onChange={() => handleCheck()}
         {...inputProps}
       />

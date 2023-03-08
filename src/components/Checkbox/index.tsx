@@ -15,7 +15,7 @@ const Checkbox = ({
   onCheck,
   ...inputProps
 }: CheckboxProps) => {
-  const [checked, setChecked] = useState(isChecked)
+  const [checked, setChecked] = useState(!!isChecked)
 
   const handleCheck = () => {
     const checkStatus = !checked
@@ -30,7 +30,7 @@ const Checkbox = ({
       <S.Input
         type="checkbox"
         id={labelFor}
-        checked={checked}
+        checked={!!checked}
         onChange={() => handleCheck()}
         {...inputProps}
       />

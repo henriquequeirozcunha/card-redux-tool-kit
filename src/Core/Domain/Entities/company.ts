@@ -1,4 +1,5 @@
 export type Company = {
+  id: string
   company_name: string
   trading_name: string
   cnpj: string
