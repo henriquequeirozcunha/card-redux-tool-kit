@@ -11,6 +11,7 @@ import * as S from './styles'
 import * as yup from 'yup'
 import { FieldError, parseYupValidation } from 'validations'
 import { Grid } from 'components/Grid'
+import { mockCategories } from '../../../tests/mocks'
 
 const defaultValues: Product = {
   id: '',
@@ -18,13 +19,6 @@ const defaultValues: Product = {
   price: 0,
   suspended: false
 }
-
-const listCategories: Category[] = [
-  { name: 'Eletrônicos', id: '1', is_principal: true },
-  { name: 'Limpeza', id: '2' },
-  { name: 'Construção', id: '3' },
-  { name: 'Outros', id: '4' }
-]
 
 const listTags: {
   label: string
@@ -113,7 +107,7 @@ const ProductForm = () => {
             <Select
               span="4"
               title="Categoria"
-              options={listCategories.map((item) => ({
+              options={mockCategories.map((item) => ({
                 label: item.name,
                 value: item.id,
                 is_principal: item.is_principal
