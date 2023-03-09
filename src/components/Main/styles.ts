@@ -80,3 +80,11 @@ export const CardListWrapper = styled.div`
     justify-items: center;
   `}
 `
+export const SpinnerWrapper = styled.div`
+  ${({ theme }) => css`
+    height: 10rem;
+    width: 10rem;
+
+    margin: auto;
+  `}
+`

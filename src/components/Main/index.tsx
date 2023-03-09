@@ -1,5 +1,7 @@
 import Card from 'components/Card'
-import ProductFilters from 'components/ProductFilters'
+import ProductFilters, { FilterGroup } from 'components/ProductFilters'
+import { Spinner } from 'components/Spinner'
+import { ListProducts } from 'core/application/services/products'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from 'store/configureStore'
 import {
@@ -8,30 +10,51 @@ import {
   removeProduct
 } from 'store/productSlice'
 import Base from 'templates/Base'
+import { KeyValueObject } from 'utils'
 import * as S from './styles'
 
 const Main = ({
   title = 'React Avançado',
   description = 'Typescript, ReactJS, NextJS e Styled Component'
 }) => {
-  const { status } = useAppSelector((state) => state.products)
+  const { status, productsLoaded } = useAppSelector((state) => state.products)
   const products = useAppSelector(productSelectors.selectAll)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(listProductsAsync({}))
-  }, [dispatch])
+    if (!productsLoaded) {
+      dispatch(listProductsAsync({}))
+    }
+  }, [dispatch, productsLoaded])
 
   const handleRemoveItem = (id: string) => {
     dispatch(removeProduct(id))
   }
 
-  if (status && status.includes('pending')) {
-    return (
-      <Base>
-        <h1>loading</h1>
-      </Base>
-    )
+  const mapToListProductQuery = (
+    filters: FilterGroup[]
+  ): ListProducts.Query => {
+    const fieldMapping: KeyValueObject = {
+      category: 'category_id',
+      company: 'company_id'
+    }
+
+    const result = filters.reduce((acc, group) => {
+      if (!fieldMapping[group.group_key as keyof KeyValueObject]) return acc
+
+      const field = fieldMapping[group.group_key as keyof KeyValueObject]
+
+      return {
+        ...acc,
+        [field as string]: group.items.map((item) => item.value)
+      }
+    }, {} as ListProducts.Query)
+
+    return result
+  }
+
+  const handleOnChangeProductFilter = (filters: FilterGroup[]) => {
+    dispatch(listProductsAsync(mapToListProductQuery(filters)))
   }
 
   return (
@@ -48,19 +71,25 @@ const Main = ({
 
         <S.MainContent>
           <S.FiltersWrapper>
-            <ProductFilters />
+            <ProductFilters onFilter={handleOnChangeProductFilter} />
           </S.FiltersWrapper>
 
           <S.Container>
-            <S.CardListWrapper>
-              {products?.map((product) => (
-                <Card
-                  key={product.id}
-                  product={product}
-                  onRemoveItem={() => handleRemoveItem(product.id)}
-                />
-              ))}
-            </S.CardListWrapper>
+            {status && status.includes('pending') ? (
+              <S.SpinnerWrapper>
+                <Spinner width="100%" height="100%" />
+              </S.SpinnerWrapper>
+            ) : (
+              <S.CardListWrapper>
+                {products?.map((product) => (
+                  <Card
+                    key={product.id}
+                    product={product}
+                    onRemoveItem={() => handleRemoveItem(product.id)}
+                  />
+                ))}
+              </S.CardListWrapper>
+            )}
           </S.Container>
         </S.MainContent>
       </S.Wrapper>

@@ -9,69 +9,79 @@ export const mockProducts: Product[] = [
     name: 'New Product 1',
     price: 100,
     picture_url: '/img/logo.svg',
-    description: defaultDescription
+    description: defaultDescription,
+    category_id: '1'
   },
   {
     id: generateUniqueId(),
     name: 'New Product 2',
     price: 200,
     picture_url: '/img/hero-illustration.svg',
-    description: defaultDescription
+    description: defaultDescription,
+    category_id: '1'
   },
   {
     id: generateUniqueId(),
     name: 'New Product 3',
     price: 300,
     picture_url: '/img/logo.svg',
-    description: defaultDescription
+    description: defaultDescription,
+    category_id: '1'
   },
   {
     id: generateUniqueId(),
     name: 'New Product 4',
     price: 400,
     picture_url: '/img/hero-illustration.svg',
-    description: defaultDescription
+    description: defaultDescription,
+    category_id: '1'
   },
   {
     id: generateUniqueId(),
     name: 'New Product 5',
     price: 500,
     picture_url: '/img/hero-illustration.svg',
-    description: defaultDescription
+    description: defaultDescription,
+    category_id: '1'
   },
   {
     id: generateUniqueId(),
     name: 'New Product 6',
     price: 600,
     picture_url: '/img/hero-illustration.svg',
-    description: defaultDescription
+    description: defaultDescription,
+    category_id: '1'
   },
   {
     id: generateUniqueId(),
     name: 'New Product 7',
     price: 700,
     picture_url: '/img/hero-illustration.svg',
-    description: defaultDescription
+    description: defaultDescription,
+    category_id: '3'
   },
   {
     id: generateUniqueId(),
     name: 'New Product 8',
     price: 800,
     picture_url: '/img/hero-illustration.svg',
-    description: defaultDescription
+    description: defaultDescription,
+    category_id: '2'
   },
   {
     id: generateUniqueId(),
     name: 'New Product 9',
     price: 900,
     picture_url: '/img/hero-illustration.svg',
-    description: defaultDescription
+    description: defaultDescription,
+    category_id: '2'
   },
   {
     id: generateUniqueId(),
     name: 'New Product 10',
     price: 1000,
     picture_url: '/img/hero-illustration.svg',
-    description: defaultDescription
+    description: defaultDescription,
+    category_id: '2'
   }
 ]

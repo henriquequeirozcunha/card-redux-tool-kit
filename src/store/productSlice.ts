@@ -60,7 +60,8 @@ export const addProductAsync = createAsyncThunk<
 export const productSlice = createSlice({
   name: 'product',
   initialState: productAdapter.getInitialState({
-    status: 'idle'
+    status: 'idle',
+    productsLoaded: false
   }),
   reducers: {
     setWishlist: (state, action) => {

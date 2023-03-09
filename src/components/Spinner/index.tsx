@@ -1,10 +1,15 @@
 import styled, { css, keyframes } from 'styled-components'
 import { darken } from 'polished'
 
-export const Spinner = styled.div`
-  ${({ theme }) => css`
-    height: 2rem;
-    width: 2rem;
+type SpinnerProps = {
+  width?: string
+  height?: string
+}
+
+export const Spinner = styled.div<SpinnerProps>`
+  ${({ theme, width = '2rem', height = '2rem' }) => css`
+    height: ${height};
+    width: ${width};
 
     border-radius: 50%;
 
