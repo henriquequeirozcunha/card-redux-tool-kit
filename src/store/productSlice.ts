@@ -31,18 +31,18 @@ export const getProductAsync = createAsyncThunk<
   try {
     return await new GetProduct().handle({ id })
   } catch (error: any) {
-    thunkApi.rejectWithValue({ error: error.data })
+    return thunkApi.rejectWithValue({ error: error.data })
   }
 })
 
 export const listProductsAsync = createAsyncThunk<
   ListProducts.Output,
   ListProducts.Query
->('product/listProductsAsync', async ({ id, type } = {}, thunkApi) => {
+>('product/listProductsAsync', async (params, thunkApi) => {
   try {
-    return await new ListProducts().load()
+    return await new ListProducts().load(params)
   } catch (error: any) {
-    thunkApi.rejectWithValue({ error: error.data })
+    return thunkApi.rejectWithValue({ error: error.data })
   }
 })
 
@@ -53,7 +53,7 @@ export const addProductAsync = createAsyncThunk<
   try {
     await new AddProduct().handle()
   } catch (error: any) {
-    thunkApi.rejectWithValue({ error: error.data })
+    return thunkApi.rejectWithValue({ error: error.data })
   }
 })
 
@@ -87,6 +87,8 @@ export const productSlice = createSlice({
 
       if (action.payload?.length) {
         productAdapter.setAll(state, action.payload)
+      } else {
+        productAdapter.setAll(state, [])
       }
     })
     builder.addCase(listProductsAsync.rejected, (state) => {

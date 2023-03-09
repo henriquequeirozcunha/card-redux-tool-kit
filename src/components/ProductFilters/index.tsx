@@ -73,36 +73,35 @@ const ProductFilters = ({ onFilter }: ProductFiltersProps) => {
   useEffect(() => {
     const fetchData = async () => {
       if (!categoriesLoaded) {
-        await dispatch(listCategoriesAsync())
+        await dispatch(listCategoriesAsync()).unwrap()
       }
     }
 
-    fetchData().then(() => {
-      if (!filtersLoaded) {
-        setFilters([...formatDataToFilter()])
-        setFiltersLoaded(true)
-      }
-    })
+    fetchData()
+      .then(() => {
+        if (!filtersLoaded) {
+          setFilters([...formatDataToFilter()])
+          setFiltersLoaded(true)
+        }
+      })
+      .catch((error) => console.log(error))
   }, [categoriesLoaded, dispatch, filtersLoaded, formatDataToFilter])
-
-  // useEffect(() => {
-  //   if (!filtersLoaded) {
-  //     setFilters([...formatDataToFilter()])
-  //   }
-  // }, [filtersLoaded, formatDataToFilter, categoriesLoaded])
 
   const handleOnCheck = ({
     groupIndex,
-    itemIndex,
-    selected
+    itemIndex
   }: {
     groupIndex: number
     itemIndex: number
-    selected: boolean
   }) => {
-    const item = filters[groupIndex].items[itemIndex]
+    filters[groupIndex].items.forEach((item, index) => {
+      if (index === itemIndex) {
+        item.selected = true
+        return
+      }
 
-    item.selected = selected
+      item.selected = false
+    })
 
     setFilters([...filters])
 
@@ -140,19 +139,18 @@ const ProductFilters = ({ onFilter }: ProductFiltersProps) => {
                     key={`${itemIndex}_${item.id}`}
                     label={item.name}
                     labelFor={item.value}
-                    onCheck={(status) =>
-                      handleOnCheck({ groupIndex, itemIndex, selected: status })
-                    }
+                    onCheck={() => handleOnCheck({ groupIndex, itemIndex })}
                   />
                 ) : (
                   <RadioButton
                     key={`${itemIndex}_${item.id}`}
                     label={item.name}
                     labelFor={item.value}
+                    checked={!!item.selected}
                     name={group.label}
-                    onCheck={(status) =>
-                      handleOnCheck({ groupIndex, itemIndex, selected: status })
-                    }
+                    onCheck={() => {
+                      handleOnCheck({ groupIndex, itemIndex })
+                    }}
                   />
                 )}
               </div>

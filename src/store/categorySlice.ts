@@ -16,7 +16,7 @@ export const listCategoriesAsync = createAsyncThunk<
   try {
     return await new ListCategories().handle()
   } catch (error: any) {
-    thunkApi.rejectWithValue({ error: error.data })
+    return thunkApi.rejectWithValue({ error: error.message })
   }
 })
 
@@ -43,7 +43,7 @@ export const categorySlice = createSlice({
 
       state.categoriesLoaded = true
     })
-    builder.addCase(listCategoriesAsync.rejected, (state) => {
+    builder.addCase(listCategoriesAsync.rejected, (state, action) => {
       state.status = 'idle'
       state.categoriesLoaded = false
     })
