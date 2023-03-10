@@ -39,7 +39,10 @@ export const Logo = styled.img`
 `
 
 export const Title = styled.h1`
-  ${({ theme }) => css``}
+  ${({ theme }) =>
+    css`
+      cursor: pointer;
+    `}
 `
 
 export const Menu = styled.div`

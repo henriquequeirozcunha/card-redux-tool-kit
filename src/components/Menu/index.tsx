@@ -43,7 +43,7 @@ const Menu = () => {
       <S.LogoWrapper>
         <S.Logo src="/img/logo.svg" />
       </S.LogoWrapper>
-      <S.Title>Product Base</S.Title>
+      <S.Title onClick={() => router.push('/')}>Product Base</S.Title>
       <S.Menu>
         <UserDropdown />
         <S.CartWrapper onClick={() => handleGoToBasketPage()}>

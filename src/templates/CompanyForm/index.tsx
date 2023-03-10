@@ -11,6 +11,8 @@ import * as S from './styles'
 import * as yup from 'yup'
 import Select from 'components/Select'
 import { Company } from 'core/domain/entities/company'
+import { failureNotification, sucessNotification } from 'utils'
+import { listStates } from '../../../tests/mocks/mock-states'
 
 yup.setLocale(pt)
 
@@ -27,29 +29,6 @@ const schema = yup
     address_complement: yup.string().required('Complemento é obrigatório')
   })
   .required()
-
-const listStates = [
-  {
-    label: 'Pernambuco',
-    value: 'PE'
-  },
-  {
-    label: 'Paraíba',
-    value: 'PB'
-  },
-  {
-    label: 'Rio Grande do Norte',
-    value: 'RN'
-  },
-  {
-    label: 'Rio de Janeiro',
-    value: 'RJ'
-  },
-  {
-    label: 'São Paulo',
-    value: 'SP'
-  }
-]
 
 const CompanyForm = () => {
   const {
@@ -78,9 +57,15 @@ const CompanyForm = () => {
 
   const handleSubmitForm = (data: FieldValues) => {
     try {
-      console.log('data', data)
-    } catch (error) {
-      console.log('error', error)
+      sucessNotification()
+    } catch (error: any) {
+      const errorMessage = `
+        Ops... algum erro acontenceu!!!!!
+
+        Erro: ${error?.message}
+      `
+
+      failureNotification(errorMessage)
     }
   }
 
@@ -97,13 +82,29 @@ const CompanyForm = () => {
     }
 
     clearErrors('cep')
-    const response = await fetch(`https://viacep.com.br/ws/${value}/json/`)
-    const data = await response.json()
 
-    setValue('address_name', data.logradouro)
-    setValue('address_state', data.uf)
-    setValue('address_district', data.localidade)
-    setValue('address_complement', data.complemento)
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${value}/json/`)
+      const data = await response.json()
+
+      setValue('address_name', data.logradouro)
+      setValue('address_state', data.uf)
+      setValue('address_district', data.localidade)
+      setValue('address_complement', data.complemento)
+    } catch (error: any) {
+      setValue('address_name', '')
+      setValue('address_state', '')
+      setValue('address_district', '')
+      setValue('address_complement', '')
+
+      const errorMessage = `
+      Erro ao consultar API dos Correios
+
+      Erro: ${error?.message}
+    `
+
+      failureNotification(errorMessage)
+    }
   }
 
   const validateCNPJ = (value: string) => {

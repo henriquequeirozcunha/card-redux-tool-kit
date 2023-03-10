@@ -5,6 +5,8 @@ import { globalStore } from 'store/configureStore'
 import { ThemeProvider } from 'styled-components'
 import GlobalStyles from 'styles/global'
 import theme from 'styles/theme'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
 
 function App({ Component, pageProps }: AppProps) {
   return (
@@ -22,6 +24,7 @@ function App({ Component, pageProps }: AppProps) {
         </Head>
         <GlobalStyles />
         <Component {...pageProps} />
+        <ToastContainer />
       </Provider>
     </ThemeProvider>
   )

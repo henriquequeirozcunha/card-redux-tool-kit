@@ -48,12 +48,13 @@ ${({ theme }) => css`
     font-size: ${theme.font.sizes.medium};
     background-color: ${theme.colors.mainBg};
 
-    height: 100vh;
+    min-height: 100vh;
   }
 
   div#__next,
   div#__next > div {
     height: 100%;
+    overflow-x: hidden;
   }
 `}
 `
