@@ -3,10 +3,11 @@ import { Company } from 'core/domain/entities/company'
 import moment from 'moment'
 import { TableColumn } from 'react-data-table-component'
 import Base from 'templates/Base'
-import { mockCompanies } from '../../../tests/mocks'
+import { mockCompanies, mockConversations } from '../../../tests/mocks'
 import Checkbox from 'components/Checkbox'
 
 import * as S from './styles'
+import Chat from 'components/Chat'
 
 const columns: TableColumn<Company>[] = [
   {
@@ -46,14 +47,20 @@ const columns: TableColumn<Company>[] = [
   }
 ]
 
+const showTable = false
+
 const ChatConversationPage = () => (
   <Base>
     <S.Wrapper>
-      <AppDataTable
-        title="Empresas Cadastradas"
-        columns={columns}
-        data={mockCompanies}
-      />
+      <Chat key={mockConversations[0].id} conversation={mockConversations[0]} />
+
+      {showTable && (
+        <AppDataTable
+          title="Empresas Cadastradas"
+          columns={columns}
+          data={mockCompanies}
+        />
+      )}
     </S.Wrapper>
   </Base>
 )
