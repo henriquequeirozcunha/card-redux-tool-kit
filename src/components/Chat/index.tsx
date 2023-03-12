@@ -4,10 +4,13 @@ import { Paperclip } from '@styled-icons/evil/Paperclip'
 import { CameraFill } from '@styled-icons/bootstrap/CameraFill'
 import { SendPlane } from '@styled-icons/remix-fill/SendPlane'
 import { ThreeDotsVertical } from '@styled-icons/bootstrap/ThreeDotsVertical'
+import { Minimize } from '@styled-icons/material-outlined/Minimize'
 
 import * as S from './styles'
 import Dropdown from 'components/Dropdown'
 import moment from 'moment'
+import { useState } from 'react'
+import { generateUniqueId } from 'core/application/utils'
 
 type ChatOptions = {
   buttons?: string[]
@@ -43,12 +46,36 @@ const conversationActions: ConversationAction[] = [
 ]
 
 const Chat = ({ conversation }: ChatProps) => {
+  const [currentConversation, setCurrentConversation] = useState(conversation)
+  const [currentMessage, setCurrentMessage] = useState('')
+  const [isCollapsed, setIsCollapsed] = useState(false)
+
+  const handleSendMessage = () => {
+    setCurrentConversation({
+      ...currentConversation,
+      messages: [
+        ...currentConversation.messages,
+        {
+          id: generateUniqueId(),
+          content: currentMessage,
+          creator: currentConversation.creator,
+          receiver: currentConversation.receiver,
+          created_at: moment().toDate()
+        }
+      ]
+    })
+  }
+
   return (
-    <S.Wrapper>
+    <S.Wrapper isCollapsed={isCollapsed}>
       <S.Header>
-        <S.Title>{conversation.receiver.name}</S.Title>
+        <S.Title>{currentConversation.receiver.name}</S.Title>
 
         <S.DropdownActionsWrapper>
+          <S.IconWrapper onClick={() => setIsCollapsed(!isCollapsed)}>
+            <Minimize />
+          </S.IconWrapper>
+
           <Dropdown
             showOverlay={false}
             title={
@@ -63,15 +90,22 @@ const Chat = ({ conversation }: ChatProps) => {
           </Dropdown>
         </S.DropdownActionsWrapper>
       </S.Header>
-      <S.Content>
-        {conversation.messages.map((message) => (
-          <S.MessageWrapper key={message.id}>
+      <S.Content isCollapsed={isCollapsed}>
+        {currentConversation.messages.map((message) => (
+          <S.MessageWrapper
+            key={message.id}
+            alignment={
+              message.creator.id === currentConversation.creator.id
+                ? 'flex-start'
+                : 'flex-end'
+            }
+          >
             <S.MessageContent>{message.content}</S.MessageContent>
             <span>{moment(message.created_at).format('DD/MM/YYYY')}</span>
           </S.MessageWrapper>
         ))}
       </S.Content>
-      <S.Footer>
+      <S.Footer isCollapsed={isCollapsed}>
         <S.InputWrapper>
           <S.ButtonGroup>
             <S.IconWrapper>
@@ -79,7 +113,12 @@ const Chat = ({ conversation }: ChatProps) => {
             </S.IconWrapper>
           </S.ButtonGroup>
 
-          <S.InputMessage type="text" name="message" placeholder="Message" />
+          <S.InputMessage
+            type="text"
+            name="message"
+            placeholder="Message"
+            onChange={(e) => setCurrentMessage(e.target.value)}
+          />
 
           <S.ButtonGroup>
             <S.IconWrapper>
@@ -92,7 +131,7 @@ const Chat = ({ conversation }: ChatProps) => {
         </S.InputWrapper>
 
         <S.SubmitButtonWrapper>
-          <S.IconWrapper>
+          <S.IconWrapper onClick={() => handleSendMessage()}>
             <SendPlane />
           </S.IconWrapper>
         </S.SubmitButtonWrapper>
