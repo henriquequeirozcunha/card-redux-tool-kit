@@ -5,6 +5,7 @@ type CheckboxProps = {
   label: string
   labelFor: string
   isChecked?: boolean
+  showLabel?: boolean
   onCheck: (status: boolean) => void
 } & InputHTMLAttributes<HTMLInputElement>
 
@@ -12,6 +13,7 @@ const Checkbox = ({
   label = 'Label',
   labelFor = 'label',
   isChecked = false,
+  showLabel = true,
   onCheck,
   ...inputProps
 }: CheckboxProps) => {
@@ -37,7 +39,7 @@ const Checkbox = ({
 
       <S.Label htmlFor={labelFor}>
         <S.Button></S.Button>
-        <S.Span>{label}</S.Span>
+        {showLabel && <S.Span>{label}</S.Span>}
       </S.Label>
     </S.Wrapper>
   )

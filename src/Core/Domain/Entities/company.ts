@@ -9,4 +9,8 @@ export type Company = {
   address_state: string
   address_district: string
   address_complement?: string
+  created_at?: Date
+  updated_at?: Date
+  deleted_at?: Date
+  suspended?: boolean
 }

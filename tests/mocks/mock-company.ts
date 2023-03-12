@@ -12,7 +12,9 @@ export const mockCompanies: Company[] = [
     address_number: '99',
     address_state: 'MG',
     address_district: 'Uberaba',
-    address_complement: ''
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: generateUniqueId(),
@@ -24,7 +26,9 @@ export const mockCompanies: Company[] = [
     address_number: '99',
     address_state: 'MG',
     address_district: 'Uberaba',
-    address_complement: ''
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: generateUniqueId(),
@@ -36,7 +40,9 @@ export const mockCompanies: Company[] = [
     address_number: '99',
     address_state: 'MG',
     address_district: 'Uberaba',
-    address_complement: ''
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: generateUniqueId(),
@@ -48,7 +54,9 @@ export const mockCompanies: Company[] = [
     address_number: '99',
     address_state: 'MG',
     address_district: 'Uberaba',
-    address_complement: ''
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: generateUniqueId(),
@@ -60,7 +68,9 @@ export const mockCompanies: Company[] = [
     address_number: '99',
     address_state: 'MG',
     address_district: 'Uberaba',
-    address_complement: ''
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: generateUniqueId(),
@@ -72,7 +82,9 @@ export const mockCompanies: Company[] = [
     address_number: '99',
     address_state: 'MG',
     address_district: 'Uberaba',
-    address_complement: ''
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: generateUniqueId(),
@@ -84,7 +96,9 @@ export const mockCompanies: Company[] = [
     address_number: '99',
     address_state: 'MG',
     address_district: 'Uberaba',
-    address_complement: ''
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: generateUniqueId(),
@@ -96,7 +110,9 @@ export const mockCompanies: Company[] = [
     address_number: '99',
     address_state: 'MG',
     address_district: 'Uberaba',
-    address_complement: ''
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: generateUniqueId(),
@@ -108,7 +124,9 @@ export const mockCompanies: Company[] = [
     address_number: '99',
     address_state: 'MG',
     address_district: 'Uberaba',
-    address_complement: ''
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
   },
   {
     id: generateUniqueId(),
@@ -120,6 +138,148 @@ export const mockCompanies: Company[] = [
     address_number: '99',
     address_state: 'MG',
     address_district: 'Uberaba',
-    address_complement: ''
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: generateUniqueId(),
+    company_name: 'Razão Social 11',
+    trading_name: 'Empresa 11',
+    cnpj: '62.418.837/0001-02',
+    cep: '38039-868',
+    address_name: 'Rua D',
+    address_number: '99',
+    address_state: 'MG',
+    address_district: 'Uberaba',
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: generateUniqueId(),
+    company_name: 'Razão Social 12',
+    trading_name: 'Empresa 12',
+    cnpj: '62.418.837/0001-02',
+    cep: '38039-868',
+    address_name: 'Rua D',
+    address_number: '99',
+    address_state: 'MG',
+    address_district: 'Uberaba',
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: generateUniqueId(),
+    company_name: 'Razão Social 13',
+    trading_name: 'Empresa 13',
+    cnpj: '62.418.837/0001-02',
+    cep: '38039-868',
+    address_name: 'Rua D',
+    address_number: '99',
+    address_state: 'MG',
+    address_district: 'Uberaba',
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: generateUniqueId(),
+    company_name: 'Razão Social 14',
+    trading_name: 'Empresa 14',
+    cnpj: '62.418.837/0001-02',
+    cep: '38039-868',
+    address_name: 'Rua D',
+    address_number: '99',
+    address_state: 'MG',
+    address_district: 'Uberaba',
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: generateUniqueId(),
+    company_name: 'Razão Social 15',
+    trading_name: 'Empresa 15',
+    cnpj: '62.418.837/0001-02',
+    cep: '38039-868',
+    address_name: 'Rua D',
+    address_number: '99',
+    address_state: 'MG',
+    address_district: 'Uberaba',
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: generateUniqueId(),
+    company_name: 'Razão Social 16',
+    trading_name: 'Empresa 16',
+    cnpj: '62.418.837/0001-02',
+    cep: '38039-868',
+    address_name: 'Rua D',
+    address_number: '99',
+    address_state: 'MG',
+    address_district: 'Uberaba',
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: generateUniqueId(),
+    company_name: 'Razão Social 17',
+    trading_name: 'Empresa 17',
+    cnpj: '62.418.837/0001-02',
+    cep: '38039-868',
+    address_name: 'Rua D',
+    address_number: '99',
+    address_state: 'MG',
+    address_district: 'Uberaba',
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: generateUniqueId(),
+    company_name: 'Razão Social 18',
+    trading_name: 'Empresa 18',
+    cnpj: '62.418.837/0001-02',
+    cep: '38039-868',
+    address_name: 'Rua D',
+    address_number: '99',
+    address_state: 'MG',
+    address_district: 'Uberaba',
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: generateUniqueId(),
+    company_name: 'Razão Social 19',
+    trading_name: 'Empresa 19',
+    cnpj: '62.418.837/0001-02',
+    cep: '38039-868',
+    address_name: 'Rua D',
+    address_number: '99',
+    address_state: 'MG',
+    address_district: 'Uberaba',
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
+  },
+  {
+    id: generateUniqueId(),
+    company_name: 'Razão Social 20',
+    trading_name: 'Empresa 20',
+    cnpj: '62.418.837/0001-02',
+    cep: '38039-868',
+    address_name: 'Rua D',
+    address_number: '99',
+    address_state: 'MG',
+    address_district: 'Uberaba',
+    address_complement: '',
+    created_at: new Date(),
+    updated_at: new Date()
   }
 ]
