@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { lighten } from 'polished'
+import { lighten, darken } from 'polished'
 
 export const Wrapper = styled.main`
   ${({ theme }) => css`
@@ -18,12 +18,18 @@ export const Wrapper = styled.main`
 export const Header = styled.div`
   ${({ theme }) => css`
     display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     padding: ${theme.spacings.xxsmall};
 
     background-color: ${theme.colors.primary};
   `}
 `
+export const DropdownActionsWrapper = styled.div`
+  ${({ theme }) => css``}
+`
+
 export const Content = styled.div`
   ${({ theme }) => css`
     flex: 1;
@@ -40,7 +46,7 @@ export const Footer = styled.div`
     align-items: center;
     gap: 0.5rem;
 
-    padding: 0.5rem 1rem;
+    padding: 1.5rem 1rem;
 
     background-color: transparent;
   `}
@@ -101,8 +107,9 @@ export const InputMessage = styled.input`
 export const SubmitButtonWrapper = styled.div`
   ${({ theme }) => css``}
 `
-export const Message = styled.div`
+export const MessageWrapper = styled.div`
   ${({ theme }) => css`
+    cursor: pointer;
     background-color: ${lighten(0.3, theme.colors.primary)};
     align-self: flex-start;
 
@@ -112,9 +119,24 @@ export const Message = styled.div`
     &:nth-child(even) {
       align-self: flex-end;
     }
+
+    span {
+      opacity: 0.8;
+      font-size: 1rem;
+      display: block;
+      text-align: end;
+      color: ${darken(0.3, theme.colors.lightGray)};
+    }
   `}
 `
 
-export const Title = styled.div`
+export const MessageContent = styled.div`
   ${({ theme }) => css``}
+`
+
+export const Title = styled.h4`
+  ${({ theme }) => css`
+    font-weight: ${theme.font.bold};
+    text-align: center;
+  `}
 `
