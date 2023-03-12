@@ -165,6 +165,7 @@ export const Title = styled.h4`
     font-weight: ${theme.font.bold};
     text-align: center;
     overflow: hidden;
+    white-space: nowrap;
 
     text-overflow: ellipsis;
   `}
