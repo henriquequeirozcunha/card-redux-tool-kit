@@ -52,7 +52,11 @@ const showTable = false
 const ChatConversationPage = () => (
   <Base>
     <S.Wrapper>
-      <Chat key={mockConversations[0].id} conversation={mockConversations[0]} />
+      <S.ConversationsWrapper>
+        {mockConversations.map((conversation) => (
+          <Chat key={conversation.id} conversation={conversation} />
+        ))}
+      </S.ConversationsWrapper>
 
       {showTable && (
         <AppDataTable

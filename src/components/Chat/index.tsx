@@ -9,7 +9,7 @@ import { Minimize } from '@styled-icons/material-outlined/Minimize'
 import * as S from './styles'
 import Dropdown from 'components/Dropdown'
 import moment from 'moment'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { generateUniqueId } from 'core/application/utils'
 
 type ChatOptions = {
@@ -48,7 +48,16 @@ const conversationActions: ConversationAction[] = [
 const Chat = ({ conversation }: ChatProps) => {
   const [currentConversation, setCurrentConversation] = useState(conversation)
   const [currentMessage, setCurrentMessage] = useState('')
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(true)
+  const divContentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    divContentRef?.current?.lastElementChild?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+      inline: 'nearest'
+    })
+  }, [divContentRef?.current?.lastElementChild])
 
   const handleSendMessage = () => {
     setCurrentConversation({
@@ -64,6 +73,12 @@ const Chat = ({ conversation }: ChatProps) => {
         }
       ]
     })
+
+    divContentRef?.current?.lastElementChild?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+      inline: 'nearest'
+    })
   }
 
   return (
@@ -76,23 +91,26 @@ const Chat = ({ conversation }: ChatProps) => {
             <Minimize />
           </S.IconWrapper>
 
-          <Dropdown
-            showOverlay={false}
-            title={
-              <S.IconWrapper>
-                <ThreeDotsVertical color="white" />
-              </S.IconWrapper>
-            }
-          >
-            {conversationActions.map((action) => (
-              <div key={action.id}>{action.label}</div>
-            ))}
-          </Dropdown>
+          {!isCollapsed && (
+            <Dropdown
+              showOverlay={false}
+              title={
+                <S.IconWrapper>
+                  <ThreeDotsVertical color="white" />
+                </S.IconWrapper>
+              }
+            >
+              {conversationActions.map((action) => (
+                <div key={action.id}>{action.label}</div>
+              ))}
+            </Dropdown>
+          )}
         </S.DropdownActionsWrapper>
       </S.Header>
       <S.Content isCollapsed={isCollapsed}>
         {currentConversation.messages.map((message) => (
           <S.MessageWrapper
+            ref={divContentRef}
             key={message.id}
             alignment={
               message.creator.id === currentConversation.creator.id

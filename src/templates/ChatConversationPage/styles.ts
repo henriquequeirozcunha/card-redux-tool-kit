@@ -8,3 +8,17 @@ export const Wrapper = styled.main`
     display: flex;
   `}
 `
+
+export const ConversationsWrapper = styled.div`
+  ${({ theme }) => css`
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+
+    z-index: ${theme.layers.alwaysOnTop};
+  `}
+`

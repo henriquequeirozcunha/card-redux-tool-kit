@@ -111,5 +111,17 @@ export const mockConversations: ChatConversation[] = [
     creator,
     receiver,
     messages: mockMessages
+  },
+  {
+    id: generateUniqueId(),
+    creator,
+    receiver,
+    messages: mockMessages
+  },
+  {
+    id: generateUniqueId(),
+    creator,
+    receiver,
+    messages: mockMessages
   }
 ]

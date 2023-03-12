@@ -7,7 +7,6 @@ type CollapsedProps = {
 
 export const Wrapper = styled.main<CollapsedProps>`
   ${({ theme, isCollapsed }) => css`
-    margin: auto; // temporario
     display: flex;
     flex-direction: column;
 
@@ -28,6 +27,7 @@ export const Header = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: ${theme.spacings.xxsmall};
 
     padding: ${theme.spacings.xxsmall};
 
@@ -65,7 +65,7 @@ export const Footer = styled.div<CollapsedProps>`
   ${({ theme, isCollapsed }) => css`
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
 
     padding: 1.5rem 1rem;
 
@@ -164,5 +164,8 @@ export const Title = styled.h4`
   ${({ theme }) => css`
     font-weight: ${theme.font.bold};
     text-align: center;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
   `}
 `
