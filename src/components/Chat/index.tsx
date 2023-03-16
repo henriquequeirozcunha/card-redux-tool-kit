@@ -1,4 +1,4 @@
-import { ChatConversation } from 'core/domain/entities'
+import { ChatConversation, ChatUser } from 'core/domain/entities'
 import { EmojiEmotions } from '@styled-icons/material-outlined/EmojiEmotions'
 import { Paperclip } from '@styled-icons/evil/Paperclip'
 import { CameraFill } from '@styled-icons/bootstrap/CameraFill'
@@ -11,6 +11,8 @@ import Dropdown from 'components/Dropdown'
 import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'
 import { generateUniqueId } from 'core/application/utils'
+
+import { io } from 'socket.io-client'
 
 type ChatOptions = {
   buttons?: string[]
@@ -45,6 +47,8 @@ const conversationActions: ConversationAction[] = [
   }
 ]
 
+let socket: any
+
 const Chat = ({ conversation }: ChatProps) => {
   const [currentConversation, setCurrentConversation] = useState(conversation)
   const [currentMessage, setCurrentMessage] = useState('')
@@ -59,7 +63,52 @@ const Chat = ({ conversation }: ChatProps) => {
     })
   }, [divContentRef?.current?.lastElementChild])
 
+  const socketInitializer = async () => {
+    // We just call it because we don't need anything else out of it
+    await fetch('/api/socket')
+
+    socket = io()
+
+    socket.on('connect', () => {
+      console.log('connected')
+    })
+
+    socket.on('newIncomingMessage', (socketResult: any) => {
+      console.log('result socket', socketResult)
+
+      const adminUser: ChatUser = {
+        id: generateUniqueId(),
+        name: 'ADMIN'
+      }
+
+      setCurrentConversation({
+        ...currentConversation,
+        messages: [
+          ...currentConversation.messages,
+          {
+            id: generateUniqueId(),
+            content: socketResult.message,
+            creator: adminUser,
+            receiver: currentConversation.receiver,
+            created_at: moment().toDate()
+          }
+        ]
+      })
+    })
+  }
+
+  useEffect(() => {
+    socketInitializer()
+  }, [])
+
   const handleSendMessage = () => {
+    console.log('socket', socket)
+    if (socket) {
+      socket.emit('createdMessage', {
+        message: currentMessage
+      })
+    }
+
     setCurrentConversation({
       ...currentConversation,
       messages: [
