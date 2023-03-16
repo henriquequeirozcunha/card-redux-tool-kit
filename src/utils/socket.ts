@@ -1,28 +1,14 @@
-import { io } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
+import { DefaultEventsMap } from 'socket.io/dist/typed-events'
 
-let socket: any
+let socketInstance: Socket<DefaultEventsMap, DefaultEventsMap> = io()
 
-export const getSocketInstance = async () => {
-  if (!socket) {
-    socket = await socketInitializer()
-  }
-
-  return socket
-}
-
-export const socketInitializer = async () => {
-  // We just call it because we don't need anything else out of it
+export const initializeSocket = async () => {
   await fetch('/api/socket')
 
-  socket = io()
+  socketInstance = io()
 
-  socket.on('connect', () => {
-    console.log('connected')
-  })
-
-  socket.on('newIncomingMessage', (msg: any) => {
-    console.log('result socket', msg)
-  })
-
-  return socket
+  return socketInstance
 }
+
+export const socket = socketInstance

@@ -42,11 +42,12 @@ export default function SocketHandler(req: any, res: any) {
     return
   }
 
-  const io = new Server(res.socket.server, {
-    cors: {
-      origin: 'http://localhost:3000'
-    }
-  })
+  // const io = new Server(res.socket.server, {
+  //   cors: {
+  //     origin: 'http://localhost:3000'
+  //   }
+  // })
+  const io = new Server(res.socket.server)
   res.socket.server.io = io
 
   const onConnection = (socket: any) => {

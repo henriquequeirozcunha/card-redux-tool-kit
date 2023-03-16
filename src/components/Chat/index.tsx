@@ -11,8 +11,7 @@ import Dropdown from 'components/Dropdown'
 import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'
 import { generateUniqueId } from 'core/application/utils'
-
-import { io } from 'socket.io-client'
+import { socket } from 'utils/socket'
 
 type ChatOptions = {
   buttons?: string[]
@@ -47,8 +46,6 @@ const conversationActions: ConversationAction[] = [
   }
 ]
 
-let socket: any
-
 const Chat = ({ conversation }: ChatProps) => {
   const [currentConversation, setCurrentConversation] = useState(conversation)
   const [currentMessage, setCurrentMessage] = useState('')
@@ -64,18 +61,7 @@ const Chat = ({ conversation }: ChatProps) => {
   }, [divContentRef?.current?.lastElementChild])
 
   const socketInitializer = async () => {
-    // We just call it because we don't need anything else out of it
-    await fetch('/api/socket')
-
-    socket = io()
-
-    socket.on('connect', () => {
-      console.log('connected')
-    })
-
     socket.on('newIncomingMessage', (socketResult: any) => {
-      console.log('result socket', socketResult)
-
       const adminUser: ChatUser = {
         id: generateUniqueId(),
         name: 'ADMIN'
@@ -102,7 +88,6 @@ const Chat = ({ conversation }: ChatProps) => {
   }, [])
 
   const handleSendMessage = () => {
-    console.log('socket', socket)
     if (socket) {
       socket.emit('createdMessage', {
         message: currentMessage
