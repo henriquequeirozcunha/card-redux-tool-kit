@@ -1,5 +1,5 @@
 import { SocketNamespace, SocketRoom } from 'core/domain/entities/socket'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Socket } from 'socket.io-client'
 import { DefaultEventsMap } from 'socket.io/dist/typed-events'
 import { connectNamespace, socketClient } from 'utils/socket'
@@ -10,6 +10,10 @@ const socketObjects: Record<
   string,
   Socket<DefaultEventsMap, DefaultEventsMap>
 > = {}
+
+const onUpdateHistory = (historyData: any) => {
+  console.log('updateHistory', historyData)
+}
 
 const AppChat = () => {
   const [namespaces, setNamespaces] = useState<SocketNamespace[]>([])
@@ -46,7 +50,6 @@ const AppChat = () => {
     setCurrentNamespace(endpoint)
 
     socketObjects[endpoint].on('listRooms', (rooms: SocketRoom[]) => {
-      console.log('rooms', rooms)
       setRooms(rooms)
     })
   }
@@ -55,6 +58,11 @@ const AppChat = () => {
     socketObjects[currentNamespace].emit('joinRoom', roomId)
 
     setCurrentRoom(roomId)
+
+    socketObjects[currentNamespace].on('resetListeners', () => {
+      socketObjects[currentNamespace].off('updateHistory', onUpdateHistory)
+      socketObjects[currentNamespace].on('updateHistory', onUpdateHistory)
+    })
   }
 
   return (

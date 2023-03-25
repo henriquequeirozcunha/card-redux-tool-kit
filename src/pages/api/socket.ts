@@ -1,5 +1,9 @@
 import { generateUniqueId } from 'core/application/utils'
-import { SocketNamespace, SocketRoom } from 'core/domain/entities/socket'
+import {
+  SocketNamespace,
+  SocketRoom,
+  SocketMessage
+} from 'core/domain/entities/socket'
 import { Server, Socket } from 'socket.io'
 import { mockNamespaces } from '../../../tests/mocks'
 
@@ -10,6 +14,8 @@ type ServerToClientEvents = {
   welcome: (message: string) => void
   listNamespaces: (namespaces: SocketNamespace[]) => void
   listRooms: (rooms: SocketRoom[] | undefined) => void
+  updateHistory: (messages: SocketMessage[]) => void
+  resetListeners: () => void
 }
 
 type ClientToServerEvents = {
@@ -107,12 +113,27 @@ export default function SocketHandler(req: any, res: any) {
           Array.from(nsSocket.rooms)
             .slice(1)
             .forEach((roomToLeave) => {
+              io.of(endpoint).in(roomToLeave).emit('resetListeners')
+
               nsSocket.leave(roomToLeave)
 
               console.log(`Socket ${socket.id} has left room ${roomToLeave}`)
             })
 
           nsSocket.join(roomId)
+
+          const namespace = mockNamespaces.find(
+            (namespace) => namespace.namespaceData.endpoint === endpoint
+          )
+          const room = namespace?.namespaceData.rooms?.find(
+            (room) => room.socketRoomData.id === roomId
+          )
+
+          if (room) {
+            io.of(endpoint)
+              .in(room.socketRoomData.id)
+              .emit('updateHistory', room.socketRoomData.history || [])
+          }
 
           console.log(`Socket ${socket.id} has joined room ${roomId}`)
         })
