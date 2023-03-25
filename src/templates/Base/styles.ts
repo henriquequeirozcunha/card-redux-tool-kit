@@ -16,8 +16,12 @@ export const Header = styled.div`
   ${({ theme }) => css``}
 `
 
-export const Content = styled.div`
-  ${({ theme }) => css`
+type ContentProps = {
+  fullWidth: boolean
+}
+
+export const Content = styled.div<ContentProps>`
+  ${({ theme, fullWidth }) => css`
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
@@ -25,6 +29,12 @@ export const Content = styled.div`
     min-height: 80vh;
     width: 90%;
     margin: 0 auto;
+
+    ${fullWidth &&
+    css`
+      width: 100%;
+      margin: 0;
+    `}
   `}
 `
 

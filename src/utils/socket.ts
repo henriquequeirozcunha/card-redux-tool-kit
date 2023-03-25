@@ -6,9 +6,15 @@ let socketInstance: Socket<DefaultEventsMap, DefaultEventsMap> = io()
 export const initializeSocket = async () => {
   await fetch('/api/socket')
 
-  socketInstance = io()
+  socketInstance = io('http://localhost:3000')
 
   return socketInstance
 }
 
-export const socket = socketInstance
+export const connectNamespace = async (endpoint: string) => {
+  const url = `http://localhost:3000/api/socket${endpoint}`
+
+  return io(endpoint)
+}
+
+export const socketClient = socketInstance

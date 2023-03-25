@@ -60,27 +60,32 @@ const Chat = ({ conversation }: ChatProps) => {
     })
   }, [divContentRef?.current?.lastElementChild])
 
-  const socketInitializer = async () => {
-    socket.on('newIncomingMessage', (socketResult: any) => {
-      const adminUser: ChatUser = {
-        id: generateUniqueId(),
-        name: 'ADMIN'
-      }
+  const socketInitializer = () => {
+    socket &&
+      socket.on('newIncomingMessage', (socketResult: any) => {
+        const adminUser: ChatUser = {
+          id: generateUniqueId(),
+          name: 'ADMIN'
+        }
 
-      setCurrentConversation({
-        ...currentConversation,
-        messages: [
-          ...currentConversation.messages,
-          {
-            id: generateUniqueId(),
-            content: socketResult.message,
-            creator: adminUser,
-            receiver: currentConversation.receiver,
-            created_at: moment().toDate()
-          }
-        ]
+        setCurrentConversation({
+          ...currentConversation,
+          messages: [
+            ...currentConversation.messages,
+            {
+              id: generateUniqueId(),
+              content: socketResult.message,
+              creator: adminUser,
+              receiver: currentConversation.receiver,
+              created_at: moment().toDate()
+            }
+          ]
+        })
       })
-    })
+
+    return () => {
+      socket && socket.off('newIncomingMessage')
+    }
   }
 
   useEffect(() => {

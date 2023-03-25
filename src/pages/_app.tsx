@@ -8,15 +8,13 @@ import theme from 'styles/theme'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
 import { useEffect, useState } from 'react'
-import { socket, initializeSocket } from 'utils/socket'
+import { socketClient, initializeSocket } from 'utils/socket'
 
 function App({ Component, pageProps }: AppProps) {
-  const [isConnected, setIsConnected] = useState(socket.connected)
+  const [isConnected, setIsConnected] = useState(socketClient.connected)
 
   useEffect(() => {
     initializeSocket()
-
-    //socket.connect()
 
     function onConnect() {
       console.log('app connected to socket')
@@ -28,12 +26,12 @@ function App({ Component, pageProps }: AppProps) {
       setIsConnected(false)
     }
 
-    socket.on('connect', onConnect)
-    socket.on('disconnect', onDisconnect)
+    socketClient.on('connect', onConnect)
+    socketClient.on('disconnect', onDisconnect)
 
     return () => {
-      socket.off('connect', onConnect)
-      socket.off('disconnect', onDisconnect)
+      socketClient.off('connect', onConnect)
+      socketClient.off('disconnect', onDisconnect)
     }
   }, [])
 

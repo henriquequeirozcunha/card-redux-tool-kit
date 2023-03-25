@@ -8,6 +8,7 @@ import Checkbox from 'components/Checkbox'
 
 import * as S from './styles'
 import Chat from 'components/Chat'
+import Portal from 'components/Portal'
 
 const columns: TableColumn<Company>[] = [
   {
@@ -52,11 +53,13 @@ const showTable = false
 const ChatConversationPage = () => (
   <Base>
     <S.Wrapper>
-      <S.ConversationsWrapper>
-        {mockConversations.map((conversation) => (
-          <Chat key={conversation.id} conversation={conversation} />
-        ))}
-      </S.ConversationsWrapper>
+      <Portal>
+        <S.ConversationsWrapper>
+          {mockConversations.map((conversation) => (
+            <Chat key={conversation.id} conversation={conversation} />
+          ))}
+        </S.ConversationsWrapper>
+      </Portal>
 
       {showTable && (
         <AppDataTable

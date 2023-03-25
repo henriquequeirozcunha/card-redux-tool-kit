@@ -1,21 +1,28 @@
+import { generateUniqueId } from 'core/application/utils'
+import { SocketNamespace, SocketRoom } from 'core/domain/entities/socket'
 import { Server, Socket } from 'socket.io'
-import { messageHandler } from './message-handler'
+import { mockNamespaces } from '../../../tests/mocks'
 
-interface ServerToClientEvents {
+type ServerToClientEvents = {
   noArg: () => void
   basicEmit: (a: number, b: string, c: Buffer) => void
   withAck: (d: string, callback: (e: number) => void) => void
+  welcome: (message: string) => void
+  listNamespaces: (namespaces: SocketNamespace[]) => void
+  listRooms: (rooms: SocketRoom[] | undefined) => void
 }
 
-interface ClientToServerEvents {
+type ClientToServerEvents = {
   hello: () => void
+  joinNamespace: (endpoint: string) => void
+  joinRoom: (roomId: string) => void
 }
 
-interface InterServerEvents {
+type InterServerEvents = {
   ping: () => void
 }
 
-interface SocketData {
+type SocketData = {
   name: string
   age: number
 }
@@ -35,28 +42,90 @@ export type SocketServer = Server<
 >
 
 export default function SocketHandler(req: any, res: any) {
-  // It means that socket server was already initialised
-  if (res.socket.server.io) {
-    console.log('Already set up')
-    res.end()
-    return
-  }
+  const io = new Server<
+    ClientToServerEvents,
+    ServerToClientEvents,
+    InterServerEvents,
+    SocketData
+  >(res.socket.server)
 
-  // const io = new Server(res.socket.server, {
-  //   cors: {
-  //     origin: 'http://localhost:3000'
-  //   }
-  // })
-  const io = new Server(res.socket.server)
   res.socket.server.io = io
 
-  const onConnection = (socket: any) => {
-    messageHandler(io, socket)
+  const onConnection = (
+    socket: Socket<ClientToServerEvents, ServerToClientEvents>
+  ) => {
+    console.log(`[SERVER] - SOCKET ID: ${socket.id}`)
+
+    socket.emit('welcome', 'Welcome to AppChat Socket Server')
+
+    socket.emit('listNamespaces', mockNamespaces)
+
+    socket.on('joinNamespace', (endpoint) => {
+      io.of(endpoint).on('connect', (nsSocket) => {
+        nsSocket.on('disconnect', () => {
+          console.log(
+            `NS-SOCKET ID: ${nsSocket.id} has disconnected from endpoint ${endpoint}`
+          )
+        })
+        console.log(
+          `NS-SOCKET ID: ${nsSocket.id} has connected to endpoint ${endpoint}`
+        )
+
+        const namespace = mockNamespaces.find(
+          (namespace) => namespace.namespaceData.endpoint === endpoint
+        )
+
+        if (!namespace) {
+          console.log('nao achou a namespace')
+          return
+        }
+
+        if (!namespace.namespaceData.rooms?.length) {
+          const individualRoom = new SocketRoom({
+            id: generateUniqueId(),
+            name: `[${namespace.namespaceData.name}] - Sala Individual 01`,
+            namespace_id: namespace.namespaceData.id,
+            private_room: true,
+            history: []
+          })
+
+          const groupRoom = new SocketRoom({
+            id: generateUniqueId(),
+            name: `[${namespace.namespaceData.name}] - Sala Grupo 01`,
+            namespace_id: namespace.namespaceData.id,
+            private_room: true,
+            history: []
+          })
+
+          namespace.addRoom(individualRoom)
+          namespace.addRoom(groupRoom)
+        }
+
+        nsSocket.emit('listRooms', namespace.namespaceData.rooms)
+
+        nsSocket.on('joinRoom', (roomId) => {
+          Array.from(nsSocket.rooms)
+            .slice(1)
+            .forEach((roomToLeave) => {
+              nsSocket.leave(roomToLeave)
+
+              console.log(`Socket ${socket.id} has left room ${roomToLeave}`)
+            })
+
+          nsSocket.join(roomId)
+
+          console.log(`Socket ${socket.id} has joined room ${roomId}`)
+        })
+      })
+    })
   }
 
   // Define actions inside
   io.on('connection', onConnection)
 
-  console.log('Setting up socket')
+  io.on('new_namespace', (namespace) => {
+    //console.log('new_namespace', namespace)
+  })
+
   res.end()
 }
