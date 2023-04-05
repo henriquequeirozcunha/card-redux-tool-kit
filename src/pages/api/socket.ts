@@ -4,8 +4,13 @@ import {
   SocketRoom,
   SocketMessage
 } from 'core/domain/entities/socket'
+import { NextApiRequest } from 'next'
 import { Server, Socket } from 'socket.io'
 import { mockNamespaces } from '../../../tests/mocks'
+
+type RoomDetails = {
+  number_of_users: number
+}
 
 type ServerToClientEvents = {
   noArg: () => void
@@ -16,6 +21,7 @@ type ServerToClientEvents = {
   listRooms: (rooms: SocketRoom[] | undefined) => void
   updateHistory: (messages: SocketMessage[]) => void
   resetListeners: () => void
+  updateRoomDetail: (roomDetails: RoomDetails) => void
 }
 
 type ClientToServerEvents = {
@@ -47,6 +53,10 @@ export type SocketServer = Server<
   SocketData
 >
 
+type CustomResponse = {
+  socket: Socket
+} & NextApiRequest
+
 export default function SocketHandler(req: any, res: any) {
   const io = new Server<
     ClientToServerEvents,
@@ -60,7 +70,7 @@ export default function SocketHandler(req: any, res: any) {
   const onConnection = (
     socket: Socket<ClientToServerEvents, ServerToClientEvents>
   ) => {
-    console.log(`[SERVER] - SOCKET ID: ${socket.id}`)
+    console.log(`[SERVER] - MAIN SOCKET ID: ${socket.id}`)
 
     socket.emit('welcome', 'Welcome to AppChat Socket Server')
 
@@ -117,7 +127,9 @@ export default function SocketHandler(req: any, res: any) {
 
               nsSocket.leave(roomToLeave)
 
-              console.log(`Socket ${socket.id} has left room ${roomToLeave}`)
+              console.log(
+                `NSSocket ${nsSocket.id} has left room ${roomToLeave}`
+              )
             })
 
           nsSocket.join(roomId)
@@ -133,9 +145,19 @@ export default function SocketHandler(req: any, res: any) {
             io.of(endpoint)
               .in(room.socketRoomData.id)
               .emit('updateHistory', room.socketRoomData.history || [])
+
+            const numberOfUsers = io
+              .of(endpoint)
+              .adapter.rooms.get(room.socketRoomData.id)?.size
+
+            io.of(endpoint)
+              .in(room.socketRoomData.id)
+              .emit('updateRoomDetail', {
+                number_of_users: numberOfUsers || 0
+              })
           }
 
-          console.log(`Socket ${socket.id} has joined room ${roomId}`)
+          console.log(`MAIN Socket ${socket.id} has joined room ${roomId}`)
         })
       })
     })

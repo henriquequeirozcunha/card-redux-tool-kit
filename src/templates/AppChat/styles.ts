@@ -23,7 +23,7 @@ export const MainContent = styled.div`
     height: 100vh;
 
     display: grid;
-    grid-template-columns: 8rem 18rem 1fr;
+    grid-template-columns: 6rem 18rem 1fr;
   `}
 `
 
@@ -77,12 +77,6 @@ export const RoomWrapper = styled.div<RoomWrapperProps>`
   `}
 `
 
-export const HistoryWrapper = styled.div`
-  ${({ theme }) => css`
-    background-color: ${theme.colors.lightGray};
-  `}
-`
-
 export const NamespaceIconWrapper = styled.img`
   ${({ theme }) => css`
     width: 4rem;
@@ -95,4 +89,40 @@ export const NamespaceIconWrapper = styled.img`
       background-color: ${darken(0.1, theme.colors.primary)};
     }
   `}
+`
+
+export const HistoryWrapper = styled.div`
+  ${({ theme }) => css`
+    background-color: ${theme.colors.lightGray};
+
+    display: flex;
+    flex-direction: column;
+  `}
+`
+
+export const HistoryHeader = styled.div`
+  ${({ theme }) => css`
+    min-height: 3rem;
+  `}
+`
+export const HistoryContent = styled.div`
+  ${({ theme }) => css`
+    flex: 1;
+  `}
+`
+
+export const HistoryFooter = styled.div`
+  ${({ theme }) => css`
+    min-height: 10rem;
+  `}
+`
+
+export const RoomName = styled.h3`
+  ${({ theme }) => css`
+    min-height: 4rem;
+  `}
+`
+
+export const RoomDetails = styled.div`
+  ${({ theme }) => css``}
 `
