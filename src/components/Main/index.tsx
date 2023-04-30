@@ -1,88 +1,99 @@
-import Button from 'components/Button'
 import Card from 'components/Card'
-import { Product } from 'Core/Domain/Entities/product'
-import { useEffect, useState } from 'react'
+import ProductFilters, { FilterGroup } from 'components/ProductFilters'
+import { Spinner } from 'components/Spinner'
+import { ListProducts } from 'core/application/services/products'
+import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from 'store/configureStore'
 import {
-  createNewEmptyProduct,
-  generateUUID,
-  mockProducts
+  listProductsAsync,
+  productSelectors,
+  removeProduct
 } from 'store/productSlice'
+import Base from 'templates/Base'
+import { KeyValueObject } from 'utils'
 import * as S from './styles'
-
-const defaultProductValues: Product = {
-  id: '',
-  name: 'New Product',
-  price: 0
-}
 
 const Main = ({
   title = 'React Avançado',
   description = 'Typescript, ReactJS, NextJS e Styled Component'
 }) => {
-  const [products, setProducts] = useState<Product[]>([])
-  const [product, setProduct] = useState<Product>(defaultProductValues)
+  const { status, productsLoaded } = useAppSelector((state) => state.products)
+  const products = useAppSelector(productSelectors.selectAll)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    setProducts((oldState) => [...oldState, ...mockProducts])
-  }, [])
-
-  const handleInput = (field: string, value: string) => {
-    setProduct((s) => ({ ...s, [field]: value }))
-
-    console.log('product', product)
-  }
-
-  const handleAddProduct = () => {
-    if (!product.name) {
-      return
+    if (!productsLoaded) {
+      dispatch(listProductsAsync({}))
     }
-
-    const productToAdd = {
-      ...product,
-      id: generateUUID()
-    }
-
-    setProducts([...products, productToAdd])
-  }
+  }, [dispatch, productsLoaded])
 
   const handleRemoveItem = (id: string) => {
-    setProducts((p) => p.filter((p) => p.id !== id))
+    dispatch(removeProduct(id))
+  }
+
+  const mapToListProductQuery = (
+    filters: FilterGroup[]
+  ): ListProducts.Query => {
+    const fieldMapping: KeyValueObject = {
+      category: 'category_id',
+      company: 'company_id'
+    }
+
+    const result = filters.reduce((acc, group) => {
+      if (!fieldMapping[group.group_key as keyof KeyValueObject]) return acc
+
+      const field = fieldMapping[group.group_key as keyof KeyValueObject]
+
+      return {
+        ...acc,
+        [field as string]: group.items.map((item) => item.value)
+      }
+    }, {} as ListProducts.Query)
+
+    return result
+  }
+
+  const handleOnChangeProductFilter = (filters: FilterGroup[]) => {
+    dispatch(listProductsAsync(mapToListProductQuery(filters)))
   }
 
   return (
-    <S.Wrapper>
-      <S.Logo
-        src="/img/logo.svg"
-        alt="Imagem de um átomo com os textos React Avançado"
-      />
-      <S.Title>{title}</S.Title>
-      <S.Description>{description}</S.Description>
+    <Base>
+      <S.Wrapper>
+        <S.Header>
+          <S.Logo
+            src="/img/logo.svg"
+            alt="Imagem de um átomo com os textos React Avançado"
+          />
+          <S.Title>{title}</S.Title>
+          <S.Description>{description}</S.Description>
+        </S.Header>
 
-      <S.Container>
-        <S.Title>My Container</S.Title>
-        <S.Content>
-          <S.CardForm>
-            <label htmlFor="name">Nome do Produto</label>
-            <input
-              type="text"
-              name="name"
-              onChange={(v) => handleInput('name', v.target.value)}
-            />
-            <Button onClick={() => handleAddProduct()}>Adicionar</Button>
-          </S.CardForm>
+        <S.MainContent>
+          <S.FiltersWrapper>
+            <ProductFilters onFilter={handleOnChangeProductFilter} />
+          </S.FiltersWrapper>
 
-          <S.CardListWrapper>
-            {products?.map((product) => (
-              <Card
-                key={product.id}
-                product={product}
-                onRemoveItem={() => handleRemoveItem(product.id)}
-              />
-            ))}
-          </S.CardListWrapper>
-        </S.Content>
-      </S.Container>
-    </S.Wrapper>
+          <S.Container>
+            {status && status.includes('pending') ? (
+              <S.SpinnerWrapper>
+                <Spinner width="100%" height="100%" />
+              </S.SpinnerWrapper>
+            ) : (
+              <S.CardListWrapper>
+                {products?.map((product) => (
+                  <Card
+                    key={product.id}
+                    product={product}
+                    onRemoveItem={() => handleRemoveItem(product.id)}
+                  />
+                ))}
+              </S.CardListWrapper>
+            )}
+          </S.Container>
+        </S.MainContent>
+      </S.Wrapper>
+    </Base>
   )
 }
 

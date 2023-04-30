@@ -19,3 +19,6 @@ export const Wrapper = styled.button<WrapperProps>`
     }
   `}
 `
+export const LoadingSpinnerWrapper = styled.div`
+  ${({ theme }) => css``}
+`
